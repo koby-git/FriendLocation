@@ -1,0 +1,115 @@
+{
+  "project_info": {
+    "project_number": "571795779384",
+    "firebase_url": "https://friendlocationv2.firebaseio.com",
+    "project_id": "friendlocationv2",
+    "storage_bucket": "friendlocationv2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571795779384:android:c51bd909662289e48adbcd",
+        "android_client_info": {
+          "package_name": "com.koby.firendlocation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "571795779384-h80sdcr4vbtff87ihq8uqgpq4p2uhm33.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKfntJge7vj1T-2LsBdhDQI2YoFBffTis"
+        },
+        {
+          "current_key": "AIzaSyAv4FAUXZWj7Ybm7f5VmnoQ-Hsv1WHg568"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "571795779384-h80sdcr4vbtff87ihq8uqgpq4p2uhm33.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571795779384:android:a8937ded61d5c7468adbcd",
+        "android_client_info": {
+          "package_name": "com.koby.friendlocation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "571795779384-h80sdcr4vbtff87ihq8uqgpq4p2uhm33.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKfntJge7vj1T-2LsBdhDQI2YoFBffTis"
+        },
+        {
+          "current_key": "AIzaSyAv4FAUXZWj7Ybm7f5VmnoQ-Hsv1WHg568"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "571795779384-h80sdcr4vbtff87ihq8uqgpq4p2uhm33.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571795779384:android:cbc212eaa921a382",
+        "android_client_info": {
+          "package_name": "com.koby.friendlocationv2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "571795779384-tb63uhdv1ss1suhudlb32jd8igci62ib.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.koby.friendlocationv2",
+            "certificate_hash": "b3752881a1a6c6eee2150a0a21d6b0401fd775df"
+          }
+        },
+        {
+          "client_id": "571795779384-h80sdcr4vbtff87ihq8uqgpq4p2uhm33.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKfntJge7vj1T-2LsBdhDQI2YoFBffTis"
+        },
+        {
+          "current_key": "AIzaSyAv4FAUXZWj7Ybm7f5VmnoQ-Hsv1WHg568"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "571795779384-h80sdcr4vbtff87ihq8uqgpq4p2uhm33.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

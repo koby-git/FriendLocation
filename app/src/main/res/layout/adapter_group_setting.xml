@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/adapter_contact_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        app:srcCompat="@drawable/ic_account_circle"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"
+        android:id="@+id/contact_name"
+        android:textSize="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="contact"
+        android:layout_gravity="center_vertical"
+        android:maxLines="1"/>
+
+</LinearLayout>

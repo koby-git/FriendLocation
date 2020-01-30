@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/border_bottom">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/adapter_contact_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        app:srcCompat="@drawable/ic_account_circle"
+        android:layout_gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:padding="10dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:id="@+id/contact_name"
+            android:textSize="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="contact"
+            android:maxLines="1"/>
+
+        <TextView
+            android:textColor="@color/colorBlack"
+            android:id="@+id/contact_street"
+            android:textSize="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="רחוב"
+            android:maxLines="1"/>
+
+        <TextView
+            android:id="@+id/contact_date"
+            android:textSize="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="date"
+            android:maxLines="1"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
+

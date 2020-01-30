@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".login.RegisterActivity"
+    android:orientation="vertical"
+    android:padding="40dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign In"
+        android:layout_gravity="center"
+        android:textSize="50dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+
+    <EditText
+        android:id="@+id/register_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:layout_marginTop="15dp"
+        android:drawablePadding="8dp"
+        android:inputType="textEmailAddress"
+        android:singleLine="true"
+        android:textColor="@color/colorBlack"
+        android:drawableLeft="@drawable/ic_mail_outline"/>
+
+    <EditText
+        android:id="@+id/register_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@drawable/ic_lock_outline"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:textColor="@color/colorBlack" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="sign in"
+
+        android:layout_marginTop="30dp"
+        android:id="@+id/register_btn" />
+
+
+    <ProgressBar
+        android:id="@+id/register_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:visibility="gone"/>
+
+
+</LinearLayout>
