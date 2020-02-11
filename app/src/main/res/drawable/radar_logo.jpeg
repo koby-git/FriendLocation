@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="409.88525"
+   height="409.75403"
+   id="svg5846"
+   version="1.1"
+   inkscape:version="0.48.1 "
+   sodipodi:docname="Radar.svg">
+  <defs
+     id="defs5848">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient6377">
+      <stop
+         style="stop-color:#02f426;stop-opacity:1;"
+         offset="0"
+         id="stop6379" />
+      <stop
+         style="stop-color:#02f426;stop-opacity:0;"
+         offset="1"
+         id="stop6381" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6377"
+       id="linearGradient6383"
+       x1="1158.2472"
+       y1="370.24667"
+       x2="1011.343"
+       y2="404.6933"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.75512372,-0.65558231,0.65558231,0.75512372,-604.82427,755.81349)" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.6048"
+     inkscape:cx="-21.072627"
+     inkscape:cy="214.53648"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:snap-global="false"
+     fit-margin-left="4"
+     fit-margin-top="4"
+     fit-margin-right="4"
+     fit-margin-bottom="4"
+     inkscape:window-width="1152"
+     inkscape:window-height="804"
+     inkscape:window-x="-4"
+     inkscape:window-y="-4"
+     inkscape:window-maximized="1">
+    <sodipodi:guide
+       orientation="1,0"
+       position="854.6577,287.61879"
+       id="guide6372" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5851">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-170.4746,-115.90817)">
+    <rect
+       style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.07817507px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="rect5854"
+       width="398.92181"
+       height="398.92184"
+       x="175.98779"
+       y="121.20532"
+       inkscape:export-filename="C:\vector_1\VctrMulti\radar.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:url(#linearGradient6383);fill-opacity:1;fill-rule:nonzero;stroke:none"
+       d="m 259.92614,187.55886 c -75.67035,65.69539 -83.75593,180.28455 -18.06051,255.95495 65.69543,75.67039 180.30508,83.77956 255.97543,18.08417 3.49139,-3.03115 6.83171,-6.18475 10.03467,-9.41542 L 378.62808,324.90371 516.65969,206.51605 c -0.25818,-0.30044 -0.49485,-0.61758 -0.75494,-0.91716 -65.69543,-75.6704 -180.30819,-83.73547 -255.97861,-18.04003 z"
+       id="path5858"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\vector_1\VctrMulti\radar.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <g
+       id="g6399"
+       transform="translate(2.4801596,2.2045856)"
+       inkscape:export-filename="C:\vector_1\VctrMulti\radar.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         transform="matrix(0.85818544,0,0,0.9007904,881.85979,-115.31899)"
+         d="m -377.14284,482.36218 c 0,111.24593 -94.65979,201.42858 -211.42857,201.42858 -116.76878,0 -211.42857,-90.18265 -211.42857,-201.42858 0,-111.24593 94.65979,-201.42857 211.42857,-201.42857 116.76878,0 211.42857,90.18264 211.42857,201.42857 z"
+         sodipodi:ry="201.42857"
+         sodipodi:rx="211.42857"
+         sodipodi:cy="482.36218"
+         sodipodi:cx="-588.57141"
+         id="path5856"
+         style="fill:none;stroke:#07ed29;stroke-width:2.39982748;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         sodipodi:type="arc" />
+      <path
+         sodipodi:type="arc"
+         style="fill:none;stroke:#07ed29;stroke-width:2.76994896;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="path6391"
+         sodipodi:cx="-588.57141"
+         sodipodi:cy="482.36218"
+         sodipodi:rx="211.42857"
+         sodipodi:ry="201.42857"
+         d="m -377.14284,482.36218 c 0,111.24593 -94.65979,201.42858 -211.42857,201.42858 -116.76878,0 -211.42857,-90.18265 -211.42857,-201.42858 0,-111.24593 94.65979,-201.42857 211.42857,-201.42857 116.76878,0 211.42857,90.18264 211.42857,201.42857 z"
+         transform="matrix(0.70475296,0,0,0.7397407,792.98909,-37.921763)" />
+      <path
+         transform="matrix(0.54277145,0,0,0.56971756,698.60826,45.047823)"
+         d="m -377.14284,482.36218 c 0,111.24593 -94.65979,201.42858 -211.42857,201.42858 -116.76878,0 -211.42857,-90.18265 -211.42857,-201.42858 0,-111.24593 94.65979,-201.42857 211.42857,-201.42857 116.76878,0 211.42857,90.18264 211.42857,201.42857 z"
+         sodipodi:ry="201.42857"
+         sodipodi:rx="211.42857"
+         sodipodi:cy="482.36218"
+         sodipodi:cx="-588.57141"
+         id="path6393"
+         style="fill:none;stroke:#07ed29;stroke-width:3.59659624;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         sodipodi:type="arc" />
+      <path
+         sodipodi:type="arc"
+         style="fill:none;stroke:#07ed29;stroke-width:5.18782711;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="path6395"
+         sodipodi:cx="-588.57141"
+         sodipodi:cy="482.36218"
+         sodipodi:rx="211.42857"
+         sodipodi:ry="201.42857"
+         d="m -377.14284,482.36218 c 0,111.24593 -94.65979,201.42858 -211.42857,201.42858 -116.76878,0 -211.42857,-90.18265 -211.42857,-201.42858 0,-111.24593 94.65979,-201.42857 211.42857,-201.42857 116.76878,0 211.42857,90.18264 211.42857,201.42857 z"
+         transform="matrix(0.37629046,0,0,0.39497155,599.66546,128.38185)" />
+      <path
+         transform="matrix(0.23005715,0,0,0.24147843,512.98319,201.48126)"
+         d="m -377.14284,482.36218 c 0,111.24593 -94.65979,201.42858 -211.42857,201.42858 -116.76878,0 -211.42857,-90.18265 -211.42857,-201.42858 0,-111.24593 94.65979,-201.42857 211.42857,-201.42857 116.76878,0 211.42857,90.18264 211.42857,201.42857 z"
+         sodipodi:ry="201.42857"
+         sodipodi:rx="211.42857"
+         sodipodi:cy="482.36218"
+         sodipodi:cx="-588.57141"
+         id="path6397"
+         style="fill:none;stroke:#07ed29;stroke-width:8.4854126;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         sodipodi:type="arc" />
+    </g>
+    <path
+       style="color:#000000;fill:none;stroke:#0bfa20;stroke-width:2.00184512;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 175.47552,321.8466 399.8834,-0.3672"
+       id="path6406"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\vector_1\VctrMulti\radar.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path6412"
+       d="m 376.27747,120.92539 0.31362,399.71958"
+       style="color:#000000;fill:none;stroke:#0bfa20;stroke-width:2.03444362;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="C:\vector_1\VctrMulti\radar.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccccccccccccccc"
+       inkscape:connector-curvature="0"
+       id="path6440"
+       d="m 422.78687,375.50576 c -1.8673,2.7292 -3.28873,8.44653 1.22591,12.65521 -3.25652,0.70465 -7.56306,1.78042 -11.69326,2.67413 -3.80626,2.0269 -4.52163,5.39214 -4.8198,8.93723 l 0.943,33.93096 c 0.91782,0.5958 4.75069,0.20174 5.66851,0.79755 l 1.9384,-28.0901 4.58928,63.96801 17.00551,-0.0469 4.58929,-63.96802 1.92792,28.0901 c 0.91782,-0.59581 4.76117,-0.20174 5.67899,-0.79755 l 0.943,-33.93096 c -0.29817,-3.54508 -1.01354,-6.91033 -4.8198,-8.93723 -4.1302,-0.8937 -8.44722,-1.96947 -11.70374,-2.67413 4.51464,-4.20867 3.09321,-9.926 1.22591,-12.6552 -3.39318,-4.28127 -10.30253,-3.70957 -12.69912,0.0469 z"
+       style="color:#000000;fill:#00ff00;stroke:#000000;stroke-width:0.13176993;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="C:\vector_1\VctrMulti\radar.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="cccsccccccccccccccccccscccc"
+       inkscape:connector-curvature="0"
+       id="path6442"
+       d="m 238.04024,293.93667 c -1.03204,2.18987 -0.4013,8.88714 -5.17193,11.5049 1.25825,1.82659 6.52888,1.85712 9.79265,1.73571 -0.2288,0.0519 -0.50874,1.12739 -1.27832,1.46596 -1.55192,0.68277 -4.31238,0.84918 -4.80836,0.96168 -3.64668,1.80462 -4.39022,4.04683 -5.00774,6.30952 -0.6492,6.8999 -2.00128,14.64393 -2.65047,21.54383 1.57661,0.42073 3.85332,-0.0102 5.42994,0.41047 1.29837,-6.64746 2.59522,-13.28967 3.8936,-19.93714 l 3.06094,11.61046 c -5.85768,11.25916 -7.5497,23.15436 -10.56668,34.84308 l 11.11788,0.50429 1.27832,18.01379 6.86073,0 1.26659,-18.01379 11.12962,-0.50429 c -3.01698,-11.68872 -4.70901,-23.58392 -10.56669,-34.84308 l 3.06094,-11.61046 c 1.29838,6.64747 2.59523,13.28968 3.8936,19.93714 1.57662,-0.42072 3.84161,0.0102 5.41822,-0.41047 -0.64919,-6.8999 -1.98955,-14.64393 -2.63874,-21.54383 -0.61753,-2.26269 -1.36107,-4.5049 -5.00774,-6.30952 -0.49599,-0.1125 -3.25645,-0.27891 -4.80837,-0.96168 -0.76958,-0.33857 -1.04952,-1.41406 -1.27833,-1.46596 3.26378,0.12141 8.53441,0.0909 9.79266,-1.73571 -5.1882,-4.91439 -3.52527,-7.64475 -5.18366,-11.5049 -3.8401,-8.53045 -14.44868,-7.47173 -17.02866,0 z"
+       style="color:#000000;fill:#00ff00;stroke:#000000;stroke-width:0.15953328;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="C:\vector_1\VctrMulti\radar.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="color:#000000;fill:#00ff00;stroke:#000000;stroke-width:0.07017298;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 290.47828,234.77744 c -1.42634,2.08471 -2.5121,6.4519 0.93641,9.66671 -2.4875,0.53825 -2.70897,0.94815 -4.90847,1.42409 -2.027,1.0794 -2.40796,2.87154 -2.56675,4.75944 l 0.50219,18.06966 c 0.48878,0.31728 2.52994,0.10743 3.01872,0.42472 l 1.03228,-14.95915 2.44398,34.06564 9.05614,-0.025 2.44399,-34.06564 1.0267,14.95915 c 0.48878,-0.31729 2.53552,-0.10743 3.0243,-0.42473 l 0.50218,-18.06965 c -0.15878,-1.8879 -0.53975,-3.68004 -2.56674,-4.75945 -2.1995,-0.47593 -2.6936,-0.89668 -5.1811,-1.43494 3.44852,-3.2148 2.36276,-7.58199 0.93642,-9.6667 -2.59189,-3.27026 -7.86961,-2.83356 -9.70025,0.0358 z"
+       id="path6444"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccccccccc"
+       inkscape:export-filename="C:\vector_1\VctrMulti\radar.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>

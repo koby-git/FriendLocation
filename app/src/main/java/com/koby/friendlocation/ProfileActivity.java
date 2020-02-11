@@ -1,5 +1,11 @@
 package com.koby.friendlocation;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,23 +14,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
@@ -37,17 +30,16 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.koby.friendlocation.classes.UsernameViewModel;
 
 import java.io.File;
 
-import static android.app.Activity.RESULT_OK;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class ProfileFragment extends Fragment {
+public class ProfileActivity extends AppCompatActivity {
 
     private static final int REQUSET_PHOTO_FROM_GALLERY = 1;
     private static final int REQUEST_OK = 2;
+
 
     FirebaseAuth mAuth;
     EditText usernameEditText;
@@ -56,84 +48,44 @@ public class ProfileFragment extends Fragment {
     Uri downloadUri;
     FirebaseUser user;
     boolean groupSetting = false;
-    GridLayout gridLayout;
-    TextView username;
-    UsernameViewModel usernameViewModel;
+
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        usernameViewModel = ViewModelProviders.of(requireActivity()).get(UsernameViewModel.class);
-
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile,container,false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        setContentView(R.layout.activity_profile);
 
 
 
-        gridLayout = view.findViewById(R.id.profile_grid);
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 //        usernameEditText = view.findViewById(R.id.profile_username);
-        username = view.findViewById(R.id.profile_name);
-//        username.setText(mAuth.getCurrentUser().getDisplayName());
+
 //        usernameEditText.setText(mAuth.getCurrentUser().getDisplayName());
 
 
-        imageView = view.findViewById(R.id.profile_imageview);
-        FloatingActionButton fab = view.findViewById(R.id.profile_fab);
-
-        usernameViewModel.getName().observe(requireActivity(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                username.setText(s);
-            }
-        });
+        imageView = findViewById(R.id.profile_imageview);
+        FloatingActionButton fab = findViewById(R.id.profile_fab);
 
         if (user.getPhotoUrl()!=null){
 //            Glide.with(view).load(user.getPhotoUrl()).circleCrop().into(imageView);
-                        Glide.with(view).load(user.getPhotoUrl()).into(imageView);
+            Glide.with(this).load(user.getPhotoUrl()).into(imageView);
         }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                if (ContextCompat.checkSelfPermission(ProfileActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
                         == PackageManager.PERMISSION_GRANTED) {
                     pickImage();
                 }else {
-                    ActivityCompat.requestPermissions(getActivity(),
+                    ActivityCompat.requestPermissions(ProfileActivity.this,
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_OK);
                 }
             }
         });
 
-        gridLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ChangeUsername taskBottomSheet = new ChangeUsername();
-                Bundle args = new Bundle();
-                args.putString("username",mAuth.getCurrentUser().getDisplayName());
-                taskBottomSheet.setArguments(args);
-                taskBottomSheet.show(getFragmentManager(), "navigation bottomSheet");
-            }
-        });
-
-//        imageView.setOnClickListener(v -> {
-//            CameraBottomSheet cameraBottomsheet = new CameraBottomSheet();
-////            args = new Bundle();
-////            args.putSerializable("files", filesName);
-////            args.putString(TASK_UID, task.getTaskUid());
-////            cameraBottomsheet.setArguments(args);
-//            cameraBottomsheet.show(getActivity().getSupportFragmentManager(), "bottomSheet");
-//        });
     }
 
     @Override
@@ -143,7 +95,7 @@ public class ProfileFragment extends Fragment {
         if (requestCode == REQUEST_OK && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             pickImage();
         } else {
-            Toast.makeText(getContext(), "please provide permission", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ProfileActivity.this, "please provide permission", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -156,7 +108,15 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("request:" + REQUSET_PHOTO_FROM_GALLERY + " == " + requestCode);
+        System.out.println("result: " + RESULT_OK + " == " + resultCode);
+
+        if(data!=null){
+            System.out.println("hara");
+        }
+
         if(requestCode == REQUSET_PHOTO_FROM_GALLERY && resultCode == RESULT_OK && data != null) {
+            System.out.println("nnnnn");
             getImageUri(data);
         }
     }
@@ -166,7 +126,7 @@ public class ProfileFragment extends Fragment {
         Uri pickedImage = data.getData();
         // Let's read picked image path using content resolver
         String[] filePath = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getActivity().getContentResolver().query(pickedImage, filePath, null, null, null);
+        Cursor cursor = getContentResolver().query(pickedImage, filePath, null, null, null);
         cursor.moveToFirst();
         String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
 
@@ -176,6 +136,7 @@ public class ProfileFragment extends Fragment {
         final StorageReference ref = mStorageRef.getReference().child("users/" +mAuth.getCurrentUser().getUid()+".jpg");
         UploadTask uploadTask = ref.putFile(contentUri);
 
+        System.out.println("ccccc");
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
@@ -194,6 +155,7 @@ public class ProfileFragment extends Fragment {
                     if(groupSetting) {
 //                        updateGroup(downloadUri);
                     }else {
+                        System.out.println("qqqq");
                         updateProfile(downloadUri);
                     }
                 } else {
@@ -221,19 +183,11 @@ public class ProfileFragment extends Fragment {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "User profile updated.");
-                            Glide.with(getContext()).load(mAuth.getCurrentUser().getPhotoUrl()).into(imageView);
+                            Glide.with(ProfileActivity.this).load(mAuth.getCurrentUser().getPhotoUrl()).into(imageView);
 
                         }
                     }
                 });
+
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-
-
-
 }

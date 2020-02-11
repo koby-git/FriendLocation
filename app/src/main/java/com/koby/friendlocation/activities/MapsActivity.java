@@ -3,25 +3,15 @@ package com.koby.friendlocation.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.work.Constraints;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 
-import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.ResultReceiver;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,29 +51,19 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.koby.friendlocation.GroupSettingActivity;
-import com.koby.friendlocation.SettingsActivity;
+import com.koby.friendlocation.Utils;
 import com.koby.friendlocation.classes.LocationConstants;
 import com.koby.friendlocation.R;
-import com.koby.friendlocation.login.LoginActivity;
 import com.koby.friendlocation.services.AddressResultReceiver;
 import com.koby.friendlocation.services.TransitionIntentService;
-import com.koby.friendlocation.UpdateWorker;
 import com.koby.friendlocation.classes.Contact;
 import com.koby.friendlocation.classes.ContactsAdapter;
 import com.koby.friendlocation.classes.Group;
 import com.koby.friendlocation.model.LocationDoc;
 import com.koby.friendlocation.services.FetchAddressIntentService;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import static com.koby.friendlocation.classes.FirebaseConstants.USERS;
 
@@ -127,8 +107,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
-
 //        setSupportActionBar(toolbar);
         BottomSheetBehavior bottomSheetBehavior;
         View bottomSheet = findViewById(R.id.maps_bottom_sheet);
@@ -140,91 +118,77 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         // specify an adapter (see also next example)
-        contactsAdapter = new ContactsAdapter(contacts,this);
+        contactsAdapter = new ContactsAdapter(contacts, this);
         recyclerView.setAdapter(contactsAdapter);
 
-        addNewMember.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        addNewMember.setOnClickListener(v -> {
 
-                String link = "https://www.example.com/?groupUid=" + group.getGroupInviteCode();
+            String link = "https://www.example.com/?groupUid=" + group.getGroupInviteCode();
 
-                FirebaseDynamicLinks.getInstance().createDynamicLink()
-                        .setLink(Uri.parse(link))
-                        .setDomainUriPrefix("https://friendlocationv2.page.link")
-                        .setAndroidParameters(
-                                new DynamicLink.AndroidParameters.Builder()
-                                        .build())
-                        .buildShortDynamicLink()
-                        .addOnSuccessListener(new OnSuccessListener<ShortDynamicLink>() {
-                            @Override
-                            public void onSuccess(ShortDynamicLink shortDynamicLink) {
-                                sendDynamicLink(shortDynamicLink.getShortLink());
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-            }
-        });
-
-        contactsAdapter.setOnItemClickListener(new ContactsAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Contact contact) {
-                LatLng myLocation = new LatLng(contact.getLatitude(), contact.getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(myLocation)      // Sets the center of the map to Mountain View
-                        .zoom(17)                   // Sets the zoom
-                        .bearing(90)                // Sets the orientation of the camera to east
-                        .tilt(30)                   // Sets the tilt of the camera to 30 degrees
-                        .build();                   // Creates a CameraPosition from the builder
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            }
-        });
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission to access the location is missing
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}
-                    , LOCATION_PERMISSION_REQUEST_CODE);
-        } else {
-
-            requestingLocationUpdates = true;
-
-            Constraints constraints = new Constraints.Builder()
-                    .setRequiresBatteryNotLow(true)
-                    .build();
-
-            PeriodicWorkRequest uploadWorkRequest = new PeriodicWorkRequest.Builder(UpdateWorker.class, 15, TimeUnit.MINUTES)
-                    .setConstraints(constraints)
-                    .build();
-
-            WorkManager.getInstance(MapsActivity.this).enqueue(uploadWorkRequest);
-
-            locationCallback = new LocationCallback() {
+            FirebaseDynamicLinks.getInstance().createDynamicLink()
+                    .setLink(Uri.parse(link))
+                    .setDomainUriPrefix("https://friendlocationv2.page.link")
+                    .setAndroidParameters(
+                            new DynamicLink.AndroidParameters.Builder()
+                                    .build())
+                    .buildShortDynamicLink()
+                    .addOnSuccessListener(new OnSuccessListener<ShortDynamicLink>() {
+                        @Override
+                        public void onSuccess(ShortDynamicLink shortDynamicLink) {
+                            sendDynamicLink(shortDynamicLink.getShortLink());
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
                 @Override
-                public void onLocationResult(LocationResult locationResult) {
-                    if (locationResult == null) {
-                        System.out.println("Location is null");
-                    }
-
-                    for (Location location : locationResult.getLocations()) {
-
-                        db.collection(USERS).document(mAuth.getUid())
-                                .set(new LocationDoc(mAuth.getUid()
-                                        , location.getLatitude(), location.getLongitude()), SetOptions.merge());
-
-                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                    }
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
                 }
-            };
+            });
+        });
+
+        contactsAdapter.setOnItemClickListener(contact -> {
+            LatLng myLocation = new LatLng(contact.getLatitude(), contact.getLongitude());
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(myLocation)      // Sets the center of the map to Mountain View
+                    .zoom(17)                   // Sets the zoom
+                    .bearing(90)                // Sets the orientation of the camera to east
+                    .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+                    .build();                   // Creates a CameraPosition from the builder
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        });
+
+        if (!Utils.checkFineLocationPermission(this)) {
+            Utils.requestFineLocationPermission(this);
         }
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        startLocationCallback();
+
+        requestingLocationUpdates = true;
+
+    }
+
+
+    private void startLocationCallback() {
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+
+                if (locationResult == null) {
+                    System.out.println("Location is null");
+                }
+
+                for (Location location : locationResult.getLocations()) {
+
+                    db.collection(USERS).document(mAuth.getUid())
+                            .set(new LocationDoc(mAuth.getUid()
+                                    , location.getLatitude(), location.getLongitude()), SetOptions.merge());
+
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                }
+            }
+        };
+
     }
 
     private void sendDynamicLink(Uri shortLink) {
@@ -301,11 +265,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onStart() {
         super.onStart();
 
+        System.out.println("//////");
+        System.out.println(group.getGroupUid());
         Query query = db.collection(USERS).whereArrayContains("groupsUid",group.getGroupUid());
+
         registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException ex) {
 
+//                System.out.println("exeption " + ex.toString());
+                System.out.println("****");
                 mMap.clear();
                 contacts.clear();
 
@@ -558,5 +527,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
 }

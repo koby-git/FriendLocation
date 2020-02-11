@@ -10,6 +10,13 @@
         <item name="actionBarStyle">@style/TransparentActionBar</item>
     </style>
 
+    <style name="AppThemeSplashScreen" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:background">@drawable/lunch_screen</item>
+
+    </style>
     <style name="TransparentActionBar" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
         <item name="android:background">@android:color/transparent</item>
     </style>

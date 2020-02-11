@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <PreferenceCategory
+        app:title="פרופיל">
+        <Preference
+            app:key="profile"
+            app:title="פרופיל"
+            app:icon="@drawable/ic_person"
+            app:fragment="com.koby.friendlocation.ProfileFragment">
+        </Preference>
+    </PreferenceCategory>
 
+    <PreferenceCategory
+        app:title="notification">
+        <SwitchPreferenceCompat
+            app:key="notifications"
+            app:title="Enable message notifications"
+            app:icon="@drawable/ic_notifications" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="פרטיות">
+        <SwitchPreferenceCompat
+            app:key="privacy"
+            app:title="הפעל מצב נסתר"
+            app:icon="@drawable/ic_hiddem_eye" />
+    </PreferenceCategory>
 </PreferenceScreen>

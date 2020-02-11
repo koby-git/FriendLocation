@@ -20,15 +20,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".ScrollingActivity"
-            android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".login.LoginActivity"
+            />
+        <activity android:name=".ProfileActivity" />
         <activity
             android:name=".GroupSettingActivity"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity android:name=".activities.AddGroupActivity" />
-        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:launchMode="singleTop" />
         <activity android:name=".activities.JoinGroupActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -69,7 +70,8 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.LoginActivity">
+        <activity android:name=".SplashScreenActivity"
+            android:theme="@style/AppThemeSplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -87,17 +89,13 @@
                 android:resource="@xml/provider_path" />
         </provider>
 
-        <service
-            android:name=".LocationUpdatesIntentService"
-            android:exported="false" />
-
-        <receiver android:name=".LocationUpdatesBroadcastReceiver"
+        <receiver
+            android:name=".LocationUpdatesBroadcastReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.android.gms.location.sample.locationupdatespendingintent.LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES" />
+                <action android:name=".LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES" />
             </intent-filter>
         </receiver>
-    </application>
 
         <service
             android:name=".services.TransitionIntentService"

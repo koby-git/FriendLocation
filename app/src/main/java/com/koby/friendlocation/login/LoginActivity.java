@@ -51,14 +51,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
 
         loadingImg = findViewById(R.id.login_loading_img);
         passwordTv = findViewById(R.id.login_password_et);
         emailTv = findViewById(R.id.login_email_et);
 
-        Glide.with(this).asGif().load(R.drawable.loading_radar).into(loadingImg);
+//        Glide.with(this).asGif().load(R.drawable.loading_radar).into(loadingImg);
 
         linearLayout = findViewById(R.id.login_linearLayout);
         db = FirebaseFirestore.getInstance();
