@@ -22,7 +22,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".login.LoginActivity"
             />
-        <activity android:name=".ProfileActivity" />
         <activity
             android:name=".GroupSettingActivity"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
@@ -91,6 +90,14 @@
 
         <receiver
             android:name=".LocationUpdatesBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name=".LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".NotificationLocationUpdatesBroadcastReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name=".LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES" />

@@ -39,29 +39,57 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
-//
 
         mAuth = FirebaseAuth.getInstance();
-        SwitchPreferenceCompat switchPreferenceCompat = findPreference("notifications");
+        SwitchPreferenceCompat notificationsSwitchPreference = findPreference("notifications");
+        SwitchPreferenceCompat privacySwitchPreference = findPreference("privacy");
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         createLocationRequest();
 
-        Preference preference = findPreference("profile");
 
-        switchPreferenceCompat.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        notificationsSwitchPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-
                 if ((Boolean)newValue){
-                    requestLocationUpdates();
-                }else {
+                    requestNotificationLocationUpdates();
                     removeLocationUpdates();
+                }else {
+                    requestLocationUpdates();
+                    removeNotificationLocationUpdates();
                 }
-                System.out.println(newValue.toString()+"notification");
                 return true;
             }
         });
-//        ImageView profileImage = preference.getv
+
+        privacySwitchPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if ((Boolean)newValue) {
+                    removeNotificationLocationUpdates();
+                    removeLocationUpdates();
+                }
+                return true;
+            }
+        });
+    }
+
+    private void removeNotificationLocationUpdates() {
+        Log.i(TAG, "Removing location updates");
+        Utils.setRequestingLocationUpdates(getContext(), false);
+        fusedLocationClient.removeLocationUpdates(getPendingIntentNotification());
+
+    }
+
+    private void requestNotificationLocationUpdates() {
+
+        try {
+            Log.i(TAG, "Starting location updates");
+            Utils.setRequestingLocationUpdates(getContext(), true);
+            fusedLocationClient.requestLocationUpdates(mLocationRequest, getPendingIntentNotification());
+        } catch (SecurityException e) {
+            Utils.setRequestingLocationUpdates(getContext(), false);
+            e.printStackTrace();
+        }
     }
 
     public void removeLocationUpdates() {
@@ -116,6 +144,23 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
 //        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent intent = new Intent(getContext(), LocationUpdatesBroadcastReceiver.class);
+        intent.setAction(LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES);
+        return PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private PendingIntent getPendingIntentNotification() {
+        // Note: for apps targeting API level 25 ("Nougat") or lower, either
+        // PendingIntent.getService() or PendingIntent.getBroadcast() may be used when requesting
+        // location updates. For apps targeting API level O, only
+        // PendingIntent.getBroadcast() should be used. This is due to the limits placed on services
+        // started in the background in "O".
+
+        // TODO(developer): uncomment to use PendingIntent.getService().
+//        Intent intent = new Intent(this, LocationUpdatesIntentService.class);
+//        intent.setAction(LocationUpdatesIntentService.ACTION_PROCESS_UPDATES);
+//        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent intent = new Intent(getContext(), NotificationLocationUpdatesBroadcastReceiver.class);
         intent.setAction(LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES);
         return PendingIntent.getBroadcast(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }

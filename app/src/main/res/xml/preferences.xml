@@ -13,10 +13,12 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:title="notification">
+        app:title="התראות">
         <SwitchPreferenceCompat
             app:key="notifications"
-            app:title="Enable message notifications"
+            app:title="התראות מיקום"
+            app:summaryOn="הפעל התראות מיקום"
+            app:summaryOff="כבה התראות מיקום"
             app:icon="@drawable/ic_notifications" />
     </PreferenceCategory>
 

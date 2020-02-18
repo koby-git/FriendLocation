@@ -133,12 +133,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (!Utils.checkPermissions(this)) {
-            Utils.requestPermissions(this);
-        }
-
-
-
     }
 
     private void getGroups() {
@@ -168,61 +162,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-//        if(Utils.getRequestingLocationUpdates(this)) {
-//            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-//            createLocationRequest();
-//            Utils.setRequestingLocationUpdates(this, true);
-//            mFusedLocationClient.requestLocationUpdates(mLocationRequest, getPendingIntent());
-//        }
-
-
-    }
-
-//
-//    private void createLocationRequest() {
-//        mLocationRequest = new LocationRequest();
-//
-//        // Sets the desired interval for active location updates. This interval is
-//        // inexact. You may not receive updates at all if no location sources are available, or
-//        // you may receive them slower than requested. You may also receive updates faster than
-//        // requested if other applications are requesting location at a faster interval.
-//        // Note: apps running on "O" devices (regardless of targetSdkVersion) may receive updates
-//        // less frequently than this interval when the app is no longer in the foreground.
-//        mLocationRequest.setInterval(UPDATE_INTERVAL);
-//
-//        // Sets the fastest rate for active location updates. This interval is exact, and your
-//        // application will never receive updates faster than this value.
-//        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL);
-//
-//        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//
-//        // Sets the maximum time when batched location updates are delivered. Updates may be
-//        // delivered sooner than this interval.
-//        mLocationRequest.setMaxWaitTime(MAX_WAIT_TIME);
-//    }
-//
-//    private PendingIntent getPendingIntent() {
-//        // Note: for apps targeting API level 25 ("Nougat") or lower, either
-//        // PendingIntent.getService() or PendingIntent.getBroadcast() may be used when requesting
-//        // location updates. For apps targeting API level O, only
-//        // PendingIntent.getBroadcast() should be used. This is due to the limits placed on services
-//        // started in the background in "O".
-//
-//        // TODO(developer): uncomment to use PendingIntent.getService().
-////        Intent intent = new Intent(this, LocationUpdatesIntentService.class);
-////        intent.setAction(LocationUpdatesIntentService.ACTION_PROCESS_UPDATES);
-////        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        Intent intent = new Intent(this, LocationUpdatesBroadcastReceiver.class);
-//        intent.setAction(LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES);
-//        return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//    }
-//
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
