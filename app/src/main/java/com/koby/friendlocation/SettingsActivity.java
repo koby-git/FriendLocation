@@ -14,8 +14,6 @@ import android.widget.LinearLayout;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    public LinearLayout profileLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,27 +24,4 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-//
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//        Fragment settingsFragment = new SettingsFragment();
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager
-//                .beginTransaction()
-////                .addToBackStack(null) // your manage backstack here
-//                .replace(R.id.setting_container, settingsFragment)
-//                .commit();
-//    }
-
-
-
-
-
 }

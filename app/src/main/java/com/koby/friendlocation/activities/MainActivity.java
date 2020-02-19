@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.koby.friendlocation.LocationProviderSingleton;
 import com.koby.friendlocation.LocationUpdatesBroadcastReceiver;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.SettingsActivity;
@@ -54,39 +55,12 @@ public class MainActivity extends AppCompatActivity {
     private ExtendedFloatingActionButton createFab,joinFab;
     private int spanCount;
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
-    /**
-     * The desired interval for location updates. Inexact. Updates may be more or less frequent.
-     */
-    public static final long UPDATE_INTERVAL = 60000; // Every 60 seconds.
-
-    /**
-     * The fastest rate for active location updates. Updates will never be more frequent
-     * than this value, but they may be less frequent.
-     */
-    public static final long FASTEST_UPDATE_INTERVAL = 30000; // Every 30 seconds
-
-    /**
-     * The max time before batched results are delivered by location services. Results may be
-     * delivered sooner than this interval.
-     */
-    public static final long MAX_WAIT_TIME = UPDATE_INTERVAL * 5; // Every 5 minutes.
-
-    /**
-     * Stores parameters for requests to the FusedLocationProviderApi.
-     */
-    private LocationRequest mLocationRequest;
-
-    /**
-     * Provides access to the Fused Location Provider API.
-     */
-    private FusedLocationProviderClient mFusedLocationClient;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        LocationProviderSingleton locationProviderSingleton = LocationProviderSingleton.getInstance(MainActivity.this);
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();

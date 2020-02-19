@@ -13,20 +13,10 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:title="התראות">
-        <SwitchPreferenceCompat
-            app:key="notifications"
-            app:title="התראות מיקום"
-            app:summaryOn="הפעל התראות מיקום"
-            app:summaryOff="כבה התראות מיקום"
-            app:icon="@drawable/ic_notifications" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
         app:title="פרטיות">
         <SwitchPreferenceCompat
             app:key="privacy"
             app:title="הפעל מצב נסתר"
-            app:icon="@drawable/ic_hiddem_eye" />
+            app:icon="@drawable/ic_hidden_eye" />
     </PreferenceCategory>
 </PreferenceScreen>
