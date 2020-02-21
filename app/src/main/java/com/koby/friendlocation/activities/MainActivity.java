@@ -1,26 +1,16 @@
 package com.koby.friendlocation.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import android.Manifest;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +18,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.koby.friendlocation.LocationProviderSingleton;
-import com.koby.friendlocation.LocationUpdatesBroadcastReceiver;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.SettingsActivity;
 import com.koby.friendlocation.classes.Group;
@@ -36,13 +25,10 @@ import com.koby.friendlocation.classes.GroupAdapter;
 import com.koby.friendlocation.login.LoginActivity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.koby.friendlocation.Utils;
 
 import static com.koby.friendlocation.classes.FirebaseConstants.GROUPS;
-import static com.koby.friendlocation.classes.FirebaseConstants.USERS;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,32 +39,30 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Group> groupList;
     private FirebaseFirestore db;
     private ExtendedFloatingActionButton createFab,joinFab;
-    private int spanCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (!Utils.checkPermissions(MainActivity.this)) {
+            Utils.requestPermissions(MainActivity.this);
+        }
+
+        //Init LocationProvider
         LocationProviderSingleton locationProviderSingleton = LocationProviderSingleton.getInstance(MainActivity.this);
 
+        //Init Database
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        //UI ELEMENT
+        //UI Element
         createFab = findViewById(R.id.main_fab_create);
         joinFab = findViewById(R.id.main_fab_join);
         recyclerView = findViewById(R.id.main_recycler_view);
 
         setRecyclerview(recyclerView);
         getGroups();
-
-//        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-//            spanCount = 6;
-//        }else {
-//            spanCount = 3;
-//        }
-
 
         createFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //First time request
+        if(Utils.getRequestingLocationUpdates(MainActivity.this)){
+            locationProviderSingleton.requestLocationUpdates();
+        }
     }
 
     private void getGroups() {

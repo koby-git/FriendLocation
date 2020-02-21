@@ -63,7 +63,6 @@ public  class Utils {
     final static String KEY_LOCATION_UPDATES_RESULT = "location-update-result";
     final static String CHANNEL_ID = "channel_01";
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 45;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 41;
 
     public static void setRequestingLocationUpdates(Context context, boolean value) {
         PreferenceManager.getDefaultSharedPreferences(context)
@@ -74,7 +73,7 @@ public  class Utils {
 
     public static boolean getRequestingLocationUpdates(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(KEY_LOCATION_UPDATES_REQUESTED, false);
+                .getBoolean(KEY_LOCATION_UPDATES_REQUESTED, true);
     }
 
     /**
@@ -139,43 +138,17 @@ public  class Utils {
         mNotificationManager.notify(0, builder.build());
     }
 
-
     /**
      * Returns the title for reporting about a list of {@link Location} objects.
      *
      * @param context The {@link Context}.
      */
     static String getLocationResultTitle(Context context, List<Location> locations) {
-//        String numLocationsReported = context.getResources().getQuantityString(
-//                R.plurals.num_locations_reported, locations.size(), locations.size());
-//        return numLocationsReported + ": " + DateFormat.getDateTimeInstance().format(new Date());
 
         Location mLocation = getLastLocation(locations);
         String locationResualtTitle = "You are at " + getCompleteAddressString(context,mLocation.getLatitude(), mLocation.getLongitude());
         return locationResualtTitle;
     }
-
-    /**
-     * Returns te text for reporting about a list of  {@link Location} objects.
-     *
-     * @param locations List of {@link Location}s.
-     */
-    private static String getLocationResultText(Context context, List<Location> locations) {
-        if (locations.isEmpty()) {
-            return "unknow";
-        }
-        StringBuilder sb = new StringBuilder();
-        for (Location location : locations) {
-            sb.append("(");
-            sb.append(location.getLatitude());
-            sb.append(", ");
-            sb.append(location.getLongitude());
-            sb.append(")");
-            sb.append("\n");
-        }
-        return sb.toString();
-    }
-
 
     static void setLocationUpdatesResult(Context context, List<Location> locations) {
 
@@ -183,29 +156,17 @@ public  class Utils {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         int lastLocation = locations.size()-1;
+        double latitude = locations.get(lastLocation).getLatitude();
+        double longitude = locations.get(lastLocation).getLongitude();
         Map mapLocation = new HashMap();
 
-        System.out.println(mAuth.getUid()+"666");
-        System.out.println("latitude" + locations.get(lastLocation).getLatitude());
-        System.out.println("longitude" + locations.get(lastLocation).getLongitude());
-        mapLocation.put("latitude", locations.get(lastLocation).getLatitude());
-        mapLocation.put("longitude" , locations.get(lastLocation).getLongitude());
+        mapLocation.put("address",getCompleteAddressString(context,latitude,longitude));
+        mapLocation.put("date",DateFormat.getDateTimeInstance().format(new Date()));
+        mapLocation.put("latitude", latitude);
+        mapLocation.put("longitude" , longitude);
 
         db.collection(USERS).document(mAuth.getUid())
-                .set(mapLocation, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                System.out.println("777");
-                Toast.makeText(context, "database  success", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-//        PreferenceManager.getDefaultSharedPreferences(context)
-//                .edit()
-//                .putString(KEY_LOCATION_UPDATES_RESULT, getLocationResultTitle(context, locations)
-//                        + "\n" + getLocationResultText(context, locations))
-//                .apply();
+                .set(mapLocation, SetOptions.merge());
     }
 
     static String getLocationUpdatesResult(Context context) {
@@ -254,20 +215,16 @@ public  class Utils {
                     (backgroundLocationPermissionState == PackageManager.PERMISSION_GRANTED);
     }
 
-    public static Boolean checkFineLocationPermission(Context context){
-         if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED){
-            return false;
-         }else {
-             return true;
-         }
+    public static boolean checkPermission(Context context){
+
+        return ActivityCompat.checkSelfPermission(
+                context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
-    public static void requestFineLocationPermission(Activity activity){
-        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}
-                , LOCATION_PERMISSION_REQUEST_CODE);
-    };
-            // Permission to access the location is missing
+    public static void requestPermission(Activity activity){
+        ActivityCompat.requestPermissions(activity,new String[] {
+                Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_PERMISSIONS_REQUEST_CODE);
+    }
 
     public static void requestPermissions(Activity activity){
         ActivityCompat.requestPermissions(activity,

@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,15 +31,13 @@ import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.koby.friendlocation.CameraBottomSheet;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.classes.Group;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.UUID;
 
-import static com.koby.friendlocation.CameraBottomSheet.REQUSET_PHOTO_FROM_GALLERY;
+import static com.koby.friendlocation.ProfileFragment.REQUSET_PHOTO_FROM_GALLERY;
 import static com.koby.friendlocation.classes.FirebaseConstants.GROUPS;
 import static com.koby.friendlocation.classes.FirebaseConstants.USERS;
 

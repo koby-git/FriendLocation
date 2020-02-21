@@ -9,7 +9,6 @@ public class Contact implements Serializable {
     private String date;
     private String address;
     private String state;
-    private Boolean isOnline;
     private Double latitude;
     private Double longitude;
     private String imageUri;
@@ -49,14 +48,6 @@ public class Contact implements Serializable {
 
     public void setState(String state) {
         this.state = state;
-    }
-
-    public Boolean getOnline() {
-        return isOnline;
-    }
-
-    public void setOnline(Boolean online) {
-        isOnline = online;
     }
 
     public String getName() {

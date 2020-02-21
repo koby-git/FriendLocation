@@ -1,7 +1,10 @@
 package com.koby.friendlocation;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
+import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -9,39 +12,33 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
-import com.koby.friendlocation.activities.LocationGrabberSingleton;
 
 public class LocationProviderSingleton {
-
-    private static LocationProviderSingleton ourInstance = null;
-
-    private static final String TAG = LocationGrabberSingleton.class.getName();
-    public static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
-
-    /**
-     * Constant used in the location settings dialog.
-     */
-    public static final int REQUEST_CHECK_SETTINGS = 0x1;
 
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 500;
+    public static final long UPDATE_INTERVAL = 6000; // Every 60 seconds.
 
     /**
-     * The fastest rate for active location updates. Exact. Updates will never be more frequent
-     * than this value.
+     * The fastest rate for active location updates. Updates will never be more frequent
+     * than this value, but they may be less frequent.
      */
-    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
-            UPDATE_INTERVAL_IN_MILLISECONDS / 2;
+    public static final long FASTEST_UPDATE_INTERVAL = 3000; // Every 30 seconds
 
-    // Keys for storing activity state in the Bundle.
-    private final static String KEY_REQUESTING_LOCATION_UPDATES = "requesting-location-updates";
-    private final static String KEY_LOCATION = "location";
-    private final static String KEY_LAST_UPDATED_TIME_STRING = "last-updated-time-string";
+    /**
+     * The max time before batched results are delivered by location services. Results may be
+     * delivered sooner than this interval.
+     */
+    private static final long MAX_WAIT_TIME = UPDATE_INTERVAL * 5; // Every 5 minutes.
 
-    // Labels.
-    private String mLatitudeLabel;/**
+
+    public static LocationProviderSingleton ourInstance = null;
+
+    private static final String TAG = LocationProviderSingleton.class.getName();
+    private final Context mContext;
+
+     /**
      * Provides access to the Fused Location Provider API.
      */
     public FusedLocationProviderClient mFusedLocationClient;
@@ -85,14 +82,16 @@ public class LocationProviderSingleton {
      */
     public String mLastUpdateTime;
 
-
-
-
     public static LocationProviderSingleton getInstance(Context context) {
+        if(ourInstance== null)
+        {
+            ourInstance= new LocationProviderSingleton(context);
+        }
         return ourInstance;
     }
 
     private LocationProviderSingleton(Context context) {
+        this.mContext = context;
         mRequestingLocationUpdates = false;
         mLastUpdateTime = "";
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
@@ -102,7 +101,30 @@ public class LocationProviderSingleton {
 
     }
 
-    public void start
+    public void requestLocationUpdates() {
+        try {
+            Log.i(TAG, "Starting location updates");
+            Utils.setRequestingLocationUpdates(mContext, true);
+            mFusedLocationClient.requestLocationUpdates(mLocationRequest, getPendingIntent());
+        } catch (SecurityException e) {
+            Utils.setRequestingLocationUpdates(mContext, false);
+            e.printStackTrace();
+        }
+    }
+
+    public void removeLocationUpdates() {
+        Log.i(TAG, "Removing location updates");
+        Utils.setRequestingLocationUpdates(mContext, false);
+
+        mFusedLocationClient.removeLocationUpdates(getPendingIntent());
+    }
+
+    private PendingIntent getPendingIntent() {
+
+        Intent intent = new Intent(mContext, LocationUpdatesBroadcastReceiver.class);
+        intent.setAction(LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES);
+        return PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
     public void buildLocationSettingsRequest() {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
@@ -130,11 +152,13 @@ public class LocationProviderSingleton {
         // inexact. You may not receive updates at all if no location sources are available, or
         // you may receive them slower than requested. You may also receive updates faster than
         // requested if other applications are requesting location at a faster interval.
-        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
 
         // Sets the fastest rate for active location updates. This interval is exact, and your
         // application will never receive updates faster than this value.
-        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL);
+
+        mLocationRequest.setMaxWaitTime(MAX_WAIT_TIME);
 
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }

@@ -25,7 +25,7 @@ import com.koby.friendlocation.classes.UsernameViewModel;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class ChangeUsername extends BottomSheetDialogFragment {
+public class UsernameFragment extends BottomSheetDialogFragment {
 
     FirebaseAuth mAuth;
     UsernameViewModel usernameViewModel;
@@ -57,17 +57,13 @@ public class ChangeUsername extends BottomSheetDialogFragment {
         usernameEditText.setText(currUsername);
 
 
-        confirmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String username = usernameEditText.getText().toString();
-                if(username.equals(currUsername) ||
-                        username.isEmpty()){
-                    System.out.println(",,,,,");
-                    return;
-                }else {
-                    updateProfile(username);
-                }
+        confirmBtn.setOnClickListener(view1 -> {
+            String username = usernameEditText.getText().toString();
+            if(username.equals(currUsername) ||
+                    username.isEmpty()){
+                return;
+            }else {
+                updateProfile(username);
             }
         });
     }
@@ -84,9 +80,7 @@ public class ChangeUsername extends BottomSheetDialogFragment {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "User profile updated.");
                             Toast.makeText(getContext(), "User profile updated", Toast.LENGTH_SHORT).show();
-//                            Glide.with(getContext()).load(mAuth.getCurrentUser().getPhotoUrl()).into(imageView);
                             usernameViewModel.setName(newUsername);
-//                            ((ProfileFragment) getParentFragment()).updateUsername(newUsername);
                             dismiss();
                         }
                     }
