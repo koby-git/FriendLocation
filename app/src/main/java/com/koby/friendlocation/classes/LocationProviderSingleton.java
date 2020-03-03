@@ -1,4 +1,4 @@
-package com.koby.friendlocation;
+package com.koby.friendlocation.classes;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -12,6 +12,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
+import com.koby.friendlocation.services.LocationUpdatesBroadcastReceiver;
+import com.koby.friendlocation.utils.Utils;
 
 public class LocationProviderSingleton {
 

@@ -1,4 +1,4 @@
-package com.koby.friendlocation;
+package com.koby.friendlocation.fragments;
 
 import android.Manifest;
 import android.content.Intent;
@@ -37,6 +37,7 @@ import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.koby.friendlocation.R;
 import com.koby.friendlocation.classes.UsernameViewModel;
 
 import java.io.File;

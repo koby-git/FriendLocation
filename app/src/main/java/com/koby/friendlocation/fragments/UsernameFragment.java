@@ -1,4 +1,4 @@
-package com.koby.friendlocation;
+package com.koby.friendlocation.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.koby.friendlocation.R;
 import com.koby.friendlocation.classes.UsernameViewModel;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;

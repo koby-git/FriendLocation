@@ -1,16 +1,12 @@
-package com.koby.friendlocation;
+package com.koby.friendlocation.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
-import android.view.View;
-import android.widget.LinearLayout;
+
+import com.koby.friendlocation.R;
+import com.koby.friendlocation.fragments.SettingsFragment;
 
 public class SettingsActivity extends AppCompatActivity {
 

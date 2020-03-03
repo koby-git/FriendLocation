@@ -1,7 +1,6 @@
 package com.koby.friendlocation.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +14,6 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 
 import com.google.android.gms.location.ActivityRecognition;
@@ -42,32 +40,22 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.koby.friendlocation.GroupSettingActivity;
-import com.koby.friendlocation.Utils;
-import com.koby.friendlocation.classes.GroupAdapter;
-import com.koby.friendlocation.classes.LocationConstants;
+import com.koby.friendlocation.utils.Utils;
 import com.koby.friendlocation.R;
-import com.koby.friendlocation.services.AddressResultReceiver;
 import com.koby.friendlocation.services.TransitionIntentService;
 import com.koby.friendlocation.classes.Contact;
 import com.koby.friendlocation.classes.ContactsAdapter;
-import com.koby.friendlocation.classes.Group;
+import com.koby.friendlocation.model.Group;
 import com.koby.friendlocation.model.LocationDoc;
-import com.koby.friendlocation.services.FetchAddressIntentService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.koby.friendlocation.LocationProviderSingleton.FASTEST_UPDATE_INTERVAL;
-import static com.koby.friendlocation.LocationProviderSingleton.UPDATE_INTERVAL;
 import static com.koby.friendlocation.classes.FirebaseConstants.USERS;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {

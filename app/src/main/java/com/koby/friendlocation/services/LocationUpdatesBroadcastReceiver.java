@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.koby.friendlocation;
+package com.koby.friendlocation.services;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -23,6 +23,7 @@ import android.location.Location;
 import android.util.Log;
 
 import com.google.android.gms.location.LocationResult;
+import com.koby.friendlocation.utils.Utils;
 
 import java.util.List;
 

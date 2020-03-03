@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.koby.friendlocation;
+package com.koby.friendlocation.utils;
 
 
 import android.Manifest;
@@ -43,6 +43,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.koby.friendlocation.R;
 import com.koby.friendlocation.activities.MainActivity;
 
 import java.text.DateFormat;
@@ -150,7 +151,7 @@ public  class Utils {
         return locationResualtTitle;
     }
 
-    static void setLocationUpdatesResult(Context context, List<Location> locations) {
+    public static void setLocationUpdatesResult(Context context, List<Location> locations) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -169,7 +170,7 @@ public  class Utils {
                 .set(mapLocation, SetOptions.merge());
     }
 
-    static String getLocationUpdatesResult(Context context) {
+    public static String getLocationUpdatesResult(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(KEY_LOCATION_UPDATES_RESULT, "");
     }

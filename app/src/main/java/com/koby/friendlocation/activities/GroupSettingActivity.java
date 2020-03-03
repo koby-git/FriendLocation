@@ -1,4 +1,4 @@
-package com.koby.friendlocation;
+package com.koby.friendlocation.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+
+import com.koby.friendlocation.R;
 import com.koby.friendlocation.classes.Contact;
 import com.koby.friendlocation.classes.SettingContactsAdapter;
 

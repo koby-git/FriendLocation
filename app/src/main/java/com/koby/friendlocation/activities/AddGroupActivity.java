@@ -32,12 +32,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.koby.friendlocation.R;
-import com.koby.friendlocation.classes.Group;
+import com.koby.friendlocation.model.Group;
 
 import java.io.File;
 import java.util.UUID;
 
-import static com.koby.friendlocation.ProfileFragment.REQUSET_PHOTO_FROM_GALLERY;
+import static com.koby.friendlocation.fragments.ProfileFragment.REQUSET_PHOTO_FROM_GALLERY;
 import static com.koby.friendlocation.classes.FirebaseConstants.GROUPS;
 import static com.koby.friendlocation.classes.FirebaseConstants.USERS;
 

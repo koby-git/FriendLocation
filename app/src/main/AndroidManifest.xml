@@ -23,11 +23,11 @@
         <activity android:name=".login.LoginActivity"
             />
         <activity
-            android:name=".GroupSettingActivity"
+            android:name=".activities.GroupSettingActivity"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
         <activity android:name=".activities.AddGroupActivity" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:launchMode="singleTop" />
         <activity android:name=".activities.JoinGroupActivity" />
         <!--
@@ -69,7 +69,7 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity android:name=".SplashScreenActivity"
+        <activity android:name=".activities.SplashScreenActivity"
             android:theme="@style/AppThemeSplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -89,15 +89,7 @@
         </provider>
 
         <receiver
-            android:name=".LocationUpdatesBroadcastReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name=".LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES" />
-            </intent-filter>
-        </receiver>
-
-        <receiver
-            android:name=".NotificationLocationUpdatesBroadcastReceiver"
+            android:name=".services.LocationUpdatesBroadcastReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name=".LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES" />

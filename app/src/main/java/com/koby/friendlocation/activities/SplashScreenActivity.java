@@ -1,4 +1,4 @@
-package com.koby.friendlocation;
+package com.koby.friendlocation.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,16 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.koby.friendlocation.activities.MainActivity;
-import com.koby.friendlocation.classes.Group;
 import com.koby.friendlocation.login.LoginActivity;
-
-import static com.koby.friendlocation.classes.FirebaseConstants.GROUPS;
 
 public class SplashScreenActivity extends AppCompatActivity {
 

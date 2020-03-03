@@ -8,7 +8,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.koby.friendlocation.R;
+import com.koby.friendlocation.model.Group;
 
 import java.util.ArrayList;
 
@@ -26,7 +29,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupHolder>
 
     public ArrayList<Group> groupList;
 
-    public GroupAdapter(ArrayList<Group> groupList) {
+    public void setGroupList(ArrayList<Group> groupList) {
         this.groupList = groupList;
     }
 
@@ -41,24 +44,25 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupHolder>
     @Override
     public void onBindViewHolder(@NonNull GroupHolder holder, int position) {
         holder.groupName.setText(groupList.get(position).getGroupName());
-        holder.circleLetter.setText(groupList.get(position).getGroupName().charAt(0)+"");
     }
 
     @Override
     public int getItemCount() {
-        return groupList.size();
+        if (groupList == null) {
+            return 0;
+        } else {
+            return groupList.size();
+        }
     }
 
     public class GroupHolder extends RecyclerView.ViewHolder{
 
         public TextView groupName;
-        public TextView circleLetter;
+
 
         public GroupHolder(@NonNull View itemView) {
             super(itemView);
             groupName = itemView.findViewById(R.id.adapter_group_name);
-            circleLetter = itemView.findViewById(R.id.circle_letter_tv);
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -1,12 +1,14 @@
-package com.koby.friendlocation;
+package com.koby.friendlocation.fragments;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.koby.friendlocation.R;
+import com.koby.friendlocation.utils.Utils;
+import com.koby.friendlocation.classes.LocationProviderSingleton;
 
 public class SettingsFragment extends PreferenceFragmentCompat{
 

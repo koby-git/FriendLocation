@@ -1,4 +1,4 @@
-package com.koby.friendlocation.classes;
+package com.koby.friendlocation.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
