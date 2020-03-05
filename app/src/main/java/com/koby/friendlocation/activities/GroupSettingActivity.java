@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import com.koby.friendlocation.R;
-import com.koby.friendlocation.classes.Contact;
-import com.koby.friendlocation.classes.SettingContactsAdapter;
+import com.koby.friendlocation.classes.model.Contact;
+import com.koby.friendlocation.classes.adapter.SettingContactsAdapter;
 
 import java.util.ArrayList;
 import java.util.Objects;

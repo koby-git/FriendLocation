@@ -7,7 +7,7 @@ import android.os.ResultReceiver;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
-import com.koby.friendlocation.classes.LocationConstants;
+import com.koby.friendlocation.classes.constant.LocationConstants;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.koby.friendlocation.classes.FirebaseConstants.USERS;
+import static com.koby.friendlocation.classes.constant.FirebaseConstants.USERS;
 
 public class AddressResultReceiver extends ResultReceiver {
     private FirebaseFirestore db;

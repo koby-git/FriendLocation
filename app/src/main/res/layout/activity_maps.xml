@@ -5,7 +5,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.MapsActivity">
+    tools:context=".activities.maps.MapsActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/maps_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark"/>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -49,22 +61,5 @@
             app:iconGravity="textEnd"/>
 
     </LinearLayout>
-
-<!--    <com.google.android.material.bottomappbar.BottomAppBar-->
-<!--        android:id="@+id/main_bottom_bar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="55dp"-->
-<!--        android:layout_gravity="bottom"-->
-<!--        app:fabAlignmentMode="end"-->
-<!--        style="@style/Widget.MaterialComponents.BottomAppBar"-->
-<!--        app:layout_scrollFlags="scroll|enterAlways"-->
-<!--        app:navigationIcon="@drawable/ic_menu" />-->
-
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/main_fab"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:srcCompat="@drawable/ic_add"-->
-<!--        app:layout_anchor="@id/main_bottom_bar" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

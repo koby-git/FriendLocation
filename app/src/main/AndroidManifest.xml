@@ -14,22 +14,23 @@
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
     <application
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".login.LoginActivity"
+        <activity android:name=".activities.auth.LoginActivity"
             />
         <activity
             android:name=".activities.GroupSettingActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".activities.AddGroupActivity" />
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.main.AddGroupActivity" />
         <activity
-            android:name=".activities.SettingsActivity"
+            android:name=".activities.main.SettingsActivity"
             android:launchMode="singleTop" />
-        <activity android:name=".activities.JoinGroupActivity" />
+        <activity android:name=".activities.main.JoinGroupActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -43,12 +44,13 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".activities.MapsActivity"
-            android:label="@string/title_activity_maps" />
-        <activity android:name=".activities.MainActivity" />
-        <activity android:name=".login.RecoverPasswordActivity" />
-        <activity android:name=".login.RegisterActivity" />
-        <activity android:name=".login.RegisterGroupActivity" />
+            android:name=".activities.maps.MapsActivity"
+            android:label="@string/title_activity_maps"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".activities.main.MainActivity" />
+        <activity android:name=".activities.auth.RecoverPasswordActivity" />
+        <activity android:name=".activities.auth.RegisterActivity" />
+        <activity android:name=".activities.auth.RegisterGroupActivity" />
         <activity android:name=".activities.InviteContactActivity" />
         <activity
             android:name=".activities.InviteReciveActivity"
@@ -64,9 +66,7 @@
                 <data
                     android:host="www.example.com"
                     android:scheme="https" />
-                <data
-                    android:host="www.example.com"
-                    android:scheme="http" />
+
             </intent-filter>
         </activity>
         <activity android:name=".activities.SplashScreenActivity"

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.JoinGroupActivity">
+    tools:context=".activities.main.JoinGroupActivity">
 
     <com.goodiebag.pinview.Pinview
         android:id="@+id/pinview"

@@ -10,6 +10,14 @@
         <item name="actionBarStyle">@style/TransparentActionBar</item>
     </style>
 
+    <style name="AppTheme.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="extendedFloatingActionButtonStyle">@style/CustomButton</item>
+        <item name="actionBarStyle">@style/TransparentActionBar</item>
+    </style>
     <style name="AppThemeSplashScreen" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
@@ -44,11 +52,6 @@
 
     <style name="HintText" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:color">@color/colorBlack</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

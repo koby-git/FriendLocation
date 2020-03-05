@@ -27,13 +27,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 import com.koby.friendlocation.R;
-import com.koby.friendlocation.login.LoginActivity;
+import com.koby.friendlocation.activities.auth.LoginActivity;
+import com.koby.friendlocation.activities.main.MainActivity;
 
 import java.util.HashMap;
 import java.util.List;
 
-import static com.koby.friendlocation.classes.FirebaseConstants.GROUPS;
-import static com.koby.friendlocation.classes.FirebaseConstants.USERS;
+import static com.koby.friendlocation.classes.constant.FirebaseConstants.GROUPS;
+import static com.koby.friendlocation.classes.constant.FirebaseConstants.USERS;
 
 
 public class InviteReciveActivity extends AppCompatActivity {
@@ -145,7 +146,7 @@ public class InviteReciveActivity extends AppCompatActivity {
 
 
                 //add user's document reference to group
-//                DocumentReference db.collection(GROUPS).document(groupUid).update("dr", FieldValue.arrayUnion(dr));
+                db.collection(GROUPS).document(groupUid).update("users", FieldValue.arrayUnion(mAuth.getUid()));
                 db.collection(USERS).document(mAuth.getUid()).update("groups",FieldValue.arrayUnion(map));
                 db.collection(USERS).document(mAuth.getUid()).update("groupsUid",FieldValue.arrayUnion(groupUid));
 

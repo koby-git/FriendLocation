@@ -32,19 +32,16 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
-import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.koby.friendlocation.R;
-import com.koby.friendlocation.activities.MainActivity;
+import com.koby.friendlocation.activities.main.MainActivity;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -53,7 +50,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.koby.friendlocation.classes.FirebaseConstants.USERS;
+import static com.koby.friendlocation.classes.constant.FirebaseConstants.USERS;
 
 /**
  * Utility methods used in this sample.

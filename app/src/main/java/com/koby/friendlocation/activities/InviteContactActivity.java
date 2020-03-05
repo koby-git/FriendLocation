@@ -18,7 +18,7 @@ import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.koby.friendlocation.R;
-import com.koby.friendlocation.model.Group;
+import com.koby.friendlocation.classes.model.Group;
 
 public class InviteContactActivity extends AppCompatActivity {
 

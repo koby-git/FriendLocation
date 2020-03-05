@@ -8,7 +8,7 @@
             app:key="profile"
             app:title="פרופיל"
             app:icon="@drawable/ic_person"
-            app:fragment="com.koby.friendlocation.ProfileFragment">
+            app:fragment="com.koby.friendlocation.fragments.ProfileFragment">
         </Preference>
     </PreferenceCategory>
 

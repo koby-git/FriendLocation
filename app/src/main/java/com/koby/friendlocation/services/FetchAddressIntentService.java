@@ -12,7 +12,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.koby.friendlocation.classes.LocationConstants;
+import com.koby.friendlocation.classes.constant.LocationConstants;
 import com.koby.friendlocation.R;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
-import static com.koby.friendlocation.classes.LocationConstants.RECEIVER;
+import static com.koby.friendlocation.classes.constant.LocationConstants.RECEIVER;
 
 public class FetchAddressIntentService extends IntentService {
 

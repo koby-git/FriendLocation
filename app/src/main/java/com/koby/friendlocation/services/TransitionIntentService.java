@@ -3,7 +3,6 @@ package com.koby.friendlocation.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.location.Location;
-import android.os.Handler;
 
 import androidx.annotation.Nullable;
 
@@ -16,12 +15,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
-import com.koby.friendlocation.classes.LocationConstants;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.koby.friendlocation.classes.FirebaseConstants.USERS;
+import static com.koby.friendlocation.classes.constant.FirebaseConstants.USERS;
 
 public class TransitionIntentService extends IntentService {
 
