@@ -19,10 +19,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.koby.friendlocation.FirebaseRepository;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.classes.viewmodel.UsernameViewModel;
+import com.koby.friendlocation.repository.FirebaseRepository;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -55,6 +54,7 @@ public class UsernameFragment extends BottomSheetDialogFragment {
         firebaseRepository = FirebaseRepository.getInstance();
 
         String currUsername = mAuth.getCurrentUser().getDisplayName();
+        Log.i(TAG, mAuth.getCurrentUser().getDisplayName());
         EditText usernameEditText = view.findViewById(R.id.username_et);
         Button confirmBtn = view.findViewById(R.id.confirm_btn);
         Button cancel = view.findViewById(R.id.cancel_btn);
@@ -74,11 +74,12 @@ public class UsernameFragment extends BottomSheetDialogFragment {
 
     private void updateProfile(String newUsername) {
 
+        //Update name in firestore
+        firebaseRepository.setProfileUsername(newUsername);
+
+        //Update name in firebaseAuth
         UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
                 .setDisplayName(newUsername).build();
-
-        //Update name in db
-        firebaseRepository.setProfileUsername(newUsername);
 
         mAuth.getCurrentUser().updateProfile(profileChangeRequest)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

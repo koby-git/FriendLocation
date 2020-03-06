@@ -15,29 +15,28 @@ import com.google.android.gms.location.SettingsClient;
 import com.koby.friendlocation.services.LocationUpdatesBroadcastReceiver;
 import com.koby.friendlocation.utils.Utils;
 
-public class LocationProviderSingleton {
+public class LocationProvider {
 
+    private static final String TAG = LocationProvider.class.getName();
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    public static final long UPDATE_INTERVAL = 6000; // Every 60 seconds.
+    public static final long UPDATE_INTERVAL = 500; // Every 5 seconds.
 
     /**
      * The fastest rate for active location updates. Updates will never be more frequent
      * than this value, but they may be less frequent.
      */
-    public static final long FASTEST_UPDATE_INTERVAL = 3000; // Every 30 seconds
+    public static final long FASTEST_UPDATE_INTERVAL = 300; // Every 3 seconds
 
     /**
      * The max time before batched results are delivered by location services. Results may be
      * delivered sooner than this interval.
      */
-    private static final long MAX_WAIT_TIME = UPDATE_INTERVAL * 5; // Every 5 minutes.
+    private static final long MAX_WAIT_TIME = UPDATE_INTERVAL * 5; // Every 25 seconds.
 
+    public static LocationProvider ourInstance = null;
 
-    public static LocationProviderSingleton ourInstance = null;
-
-    private static final String TAG = LocationProviderSingleton.class.getName();
     private final Context mContext;
 
      /**
@@ -46,60 +45,22 @@ public class LocationProviderSingleton {
     public FusedLocationProviderClient mFusedLocationClient;
 
     /**
-     * Provides access to the Location Settings API.
-     */
-    public SettingsClient mSettingsClient;
-
-    /**
      * Stores parameters for requests to the FusedLocationProviderApi.
      */
     public LocationRequest mLocationRequest;
 
-    /**
-     * Stores the types of location services the client is interested in using. Used for checking
-     * settings to determine if the device has optimal location settings.
-     */
-    public LocationSettingsRequest mLocationSettingsRequest;
-
-    /**
-     * Callback for Location events.
-     */
-    public LocationCallback mLocationCallback;
-
-    /**
-     * Represents a geographical location.
-     */
-    public Location mCurrentLocation;
-    private String mLongitudeLabel;
-    private String mLastUpdateTimeLabel;
-
-    /**
-     * Tracks the status of the location updates request. Value changes when the user presses the
-     * Start Updates and Stop Updates buttons.
-     */
-    public Boolean mRequestingLocationUpdates;
-
-    /**
-     * Time when the location was updated represented as a String.
-     */
-    public String mLastUpdateTime;
-
-    public static LocationProviderSingleton getInstance(Context context) {
+    public static LocationProvider getInstance(Context context) {
         if(ourInstance== null)
         {
-            ourInstance= new LocationProviderSingleton(context);
+            ourInstance= new LocationProvider(context);
         }
         return ourInstance;
     }
 
-    private LocationProviderSingleton(Context context) {
+    private LocationProvider(Context context) {
         this.mContext = context;
-        mRequestingLocationUpdates = false;
-        mLastUpdateTime = "";
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-        mSettingsClient = LocationServices.getSettingsClient(context);
         createLocationRequest();
-        buildLocationSettingsRequest();
 
     }
 
@@ -126,12 +87,6 @@ public class LocationProviderSingleton {
         Intent intent = new Intent(mContext, LocationUpdatesBroadcastReceiver.class);
         intent.setAction(LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES);
         return PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    public void buildLocationSettingsRequest() {
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        builder.addLocationRequest(mLocationRequest);
-        mLocationSettingsRequest = builder.build();
     }
 
     /**

@@ -21,23 +21,23 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.koby.friendlocation.CameraProvider;
+import com.koby.friendlocation.classes.CameraProvider;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.classes.viewmodel.UsernameViewModel;
 
 import static android.app.Activity.RESULT_OK;
-import static com.koby.friendlocation.CameraProvider.REQUEST_OK;
-import static com.koby.friendlocation.CameraProvider.REQUSET_PHOTO_FROM_GALLERY;
+import static com.koby.friendlocation.classes.CameraProvider.REQUEST_OK;
+import static com.koby.friendlocation.classes.CameraProvider.REQUSET_PHOTO_FROM_GALLERY;
 
 public class ProfileFragment extends Fragment {
 
-    ImageView imageView;
-    FirebaseUser firebaseUser;
-    GridLayout gridLayout;
-    TextView username;
-    UsernameViewModel usernameViewModel;
-    FloatingActionButton fab;
-    CameraProvider cameraProvider;
+    private ImageView imageView;
+    private FirebaseUser firebaseUser;
+    private GridLayout gridLayout;
+    private TextView username;
+    private UsernameViewModel usernameViewModel;
+    private FloatingActionButton fab;
+    private CameraProvider cameraProvider;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

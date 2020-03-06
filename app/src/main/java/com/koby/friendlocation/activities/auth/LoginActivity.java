@@ -123,7 +123,11 @@ public class LoginActivity extends DaggerAppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            startUserActivity();
+//                            startUserActivity();
+
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             progressBar.setVisibility(View.GONE);
@@ -135,29 +139,29 @@ public class LoginActivity extends DaggerAppCompatActivity {
                 });
     }
 
-    //Start main activity
-    private void startUserActivity() {
-        Log.d(TAG, "signInWithEmail:success");
-
-        db.collection(USERS).document(firebaseUser.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(LoginActivity.this, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
-    }
+//    //Start main activity
+//    private void startUserActivity() {
+//        Log.d(TAG, "signInWithEmail:success");
+//
+//        db.collection(USERS).document(firebaseUser.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//
+//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                startActivity(intent);
+//                finish();
+//
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                progressBar.setVisibility(View.GONE);
+//                Toast.makeText(LoginActivity.this, "Authentication failed.",
+//                        Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+//    }
 
     //Forgert password activity button
     public void forgotPassword() {

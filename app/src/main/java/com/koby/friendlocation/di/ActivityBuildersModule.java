@@ -3,6 +3,7 @@ package com.koby.friendlocation.di;
 import com.koby.friendlocation.activities.SplashScreenActivity;
 import com.koby.friendlocation.activities.auth.LoginActivity;
 import com.koby.friendlocation.activities.auth.RecoverPasswordActivity;
+import com.koby.friendlocation.activities.auth.RegisterActivity;
 import com.koby.friendlocation.activities.main.MainActivity;
 import com.koby.friendlocation.activities.maps.MapsActivity;
 
@@ -18,6 +19,10 @@ public abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector
     abstract SplashScreenActivity contributeSplashScreenActivity();
+
+    @ContributesAndroidInjector
+    abstract RegisterActivity contributeRegisterActivity();
+
 
     @ContributesAndroidInjector
     abstract RecoverPasswordActivity contributeRecoverPasswordActivity();

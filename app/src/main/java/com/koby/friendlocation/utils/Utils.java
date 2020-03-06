@@ -172,7 +172,7 @@ public  class Utils {
                 .getString(KEY_LOCATION_UPDATES_RESULT, "");
     }
 
-    static String getCompleteAddressString(Context context, double LATITUDE, double LONGITUDE) {
+    public static String getCompleteAddressString(Context context, double LATITUDE, double LONGITUDE) {
         String strAdd = "";
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         try {
@@ -192,7 +192,7 @@ public  class Utils {
         return strAdd;
     }
 
-    static Location getLastLocation(List<Location> locations){
+    private static Location getLastLocation(List<Location> locations){
         int lastLocation = locations.size()-1;
         return locations.get(lastLocation);
     }

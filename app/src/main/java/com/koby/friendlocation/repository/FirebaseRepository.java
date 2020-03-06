@@ -1,51 +1,43 @@
-package com.koby.friendlocation;
+package com.koby.friendlocation.repository;
 
+import android.content.Context;
 import android.location.Location;
 import android.net.Uri;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.koby.friendlocation.classes.model.Group;
-import com.koby.friendlocation.classes.model.LocationDoc;
+import com.koby.friendlocation.utils.Utils;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.koby.friendlocation.classes.constant.FirebaseConstants.GROUPS;
 import static com.koby.friendlocation.classes.constant.FirebaseConstants.USERS;
 
 public class FirebaseRepository {
 
-    private static final FirebaseRepository ourInstance = new FirebaseRepository();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser firebaseUser = mAuth.getCurrentUser();
+    FirebaseFirestore db;
 
-
+    private static final FirebaseRepository ourInstance = new FirebaseRepository();
     public static FirebaseRepository getInstance() {
         return ourInstance;
     }
 
-    FirebaseFirestore db;
+
     private FirebaseRepository() { db = FirebaseFirestore.getInstance(); }
 
     public MutableLiveData<List<Group>> getGroups() {
@@ -74,10 +66,20 @@ public class FirebaseRepository {
         return options;
     }
 
-    public void setUserLocation(Location location){
-        db.collection(USERS).document(firebaseUser.getUid())
-                .set(new LocationDoc(firebaseUser.getUid()
-                        , location.getLatitude(), location.getLongitude()), SetOptions.merge());
+    public void setLocationUpdatesResult(Context context, Location location) {
+
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        Map mapLocation = new HashMap();
+
+
+        mapLocation.put("address",Utils.getCompleteAddressString(context,latitude,longitude));
+        mapLocation.put("date", DateFormat.getDateTimeInstance().format(new Date()));
+        mapLocation.put("latitude", latitude);
+        mapLocation.put("longitude" , longitude);
+
+        db.collection(USERS).document(mAuth.getUid())
+                .set(mapLocation, SetOptions.merge());
     }
 
     public Query getUsersQuery(Group group){

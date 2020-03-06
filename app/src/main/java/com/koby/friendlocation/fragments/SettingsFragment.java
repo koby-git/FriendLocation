@@ -8,11 +8,11 @@ import androidx.preference.SwitchPreferenceCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.utils.Utils;
-import com.koby.friendlocation.classes.LocationProviderSingleton;
+import com.koby.friendlocation.classes.LocationProvider;
 
 public class SettingsFragment extends PreferenceFragmentCompat{
 
-    private LocationProviderSingleton locationProviderSingleton;
+    private LocationProvider locationProviderSingleton;
     FirebaseAuth mAuth;
 
     @Override
@@ -21,7 +21,7 @@ public class SettingsFragment extends PreferenceFragmentCompat{
 
         mAuth = FirebaseAuth.getInstance();
         SwitchPreferenceCompat privacySwitchPreference = findPreference("privacy");
-        locationProviderSingleton = LocationProviderSingleton.getInstance(getContext());
+        locationProviderSingleton = LocationProvider.getInstance(getContext());
 
         privacySwitchPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             if ((Boolean)newValue) {

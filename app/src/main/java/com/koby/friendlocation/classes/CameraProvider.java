@@ -1,4 +1,4 @@
-package com.koby.friendlocation;
+package com.koby.friendlocation.classes;
 
 import android.Manifest;
 import android.app.Activity;
@@ -24,10 +24,12 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.koby.friendlocation.repository.FirebaseRepository;
 
 import java.io.File;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
+import static com.koby.friendlocation.classes.constant.FirebaseConstants.USERS;
 
 public class CameraProvider {
 
@@ -44,7 +46,7 @@ public class CameraProvider {
         this.activity = context;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mStorageRef = FirebaseStorage.getInstance();
-        firebaseRepository = FirebaseRepository.getInstance();
+//        firebaseRepository = FirebaseRepository.getInstance();
     }
 
     public void setImageView(ImageView imageView){
@@ -90,9 +92,8 @@ public class CameraProvider {
 
     private void uploadImage(Uri contentUri) {
 
-        final StorageReference ref = mStorageRef.getReference().child("users/" +firebaseUser.getUid()+".jpg");
+        final StorageReference ref = mStorageRef.getReference().child(USERS + "/" +firebaseUser.getUid()+".jpg");
         UploadTask uploadTask = ref.putFile(contentUri);
-
 
         //Get firebase storage image uri
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -138,8 +139,6 @@ public class CameraProvider {
                             }catch (NullPointerException e){
                                 e.printStackTrace();
                             }
-
-
                         }
                     }
                 });

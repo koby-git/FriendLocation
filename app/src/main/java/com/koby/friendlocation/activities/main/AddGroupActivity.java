@@ -37,7 +37,7 @@ import com.koby.friendlocation.classes.model.Group;
 import java.io.File;
 import java.util.UUID;
 
-import static com.koby.friendlocation.CameraProvider.REQUSET_PHOTO_FROM_GALLERY;
+import static com.koby.friendlocation.classes.CameraProvider.REQUSET_PHOTO_FROM_GALLERY;
 import static com.koby.friendlocation.classes.constant.FirebaseConstants.GROUPS;
 import static com.koby.friendlocation.classes.constant.FirebaseConstants.USERS;
 

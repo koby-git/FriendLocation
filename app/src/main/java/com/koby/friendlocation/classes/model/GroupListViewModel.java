@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.firebase.firestore.auth.User;
-import com.google.firestore.v1.ListDocumentsRequestOrBuilder;
-import com.koby.friendlocation.FirebaseRepository;
+
+import com.koby.friendlocation.repository.FirebaseRepository;
 
 import java.util.List;
 

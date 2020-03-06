@@ -14,15 +14,15 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.koby.friendlocation.FirebaseRepository;
 import com.koby.friendlocation.activities.maps.MapsActivity;
 import com.koby.friendlocation.classes.adapter.FirestoreUiGroupAdapter;
-import com.koby.friendlocation.classes.LocationProviderSingleton;
+import com.koby.friendlocation.classes.LocationProvider;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.classes.model.Group;
 import com.koby.friendlocation.classes.adapter.GroupAdapter;
 import com.koby.friendlocation.activities.auth.LoginActivity;
 
+import com.koby.friendlocation.repository.FirebaseRepository;
 import com.koby.friendlocation.utils.Utils;
 
 import javax.inject.Inject;
@@ -42,7 +42,8 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     private RecyclerView recyclerView;
     private FirestoreUiGroupAdapter mAdapter;
-    private ExtendedFloatingActionButton createFab,joinFab;
+    private ExtendedFloatingActionButton createFab;
+    private LocationProvider locationProviderSingleton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +57,10 @@ public class MainActivity extends DaggerAppCompatActivity {
         }
 
         //Init LocationProvider
-        LocationProviderSingleton locationProviderSingleton = LocationProviderSingleton.getInstance(MainActivity.this);
+        locationProviderSingleton = LocationProvider.getInstance(MainActivity.this);
 
         //UI Element
         createFab = findViewById(R.id.main_fab_create);
-        joinFab = findViewById(R.id.main_fab_join);
         recyclerView = findViewById(R.id.main_recycler_view);
 
         setRecyclerView();
@@ -70,14 +70,6 @@ public class MainActivity extends DaggerAppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, AddGroupActivity.class));
-            }
-        });
-
-        //Join group
-        joinFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, JoinGroupActivity.class));
             }
         });
 
@@ -124,7 +116,12 @@ public class MainActivity extends DaggerAppCompatActivity {
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             case R.id.action_logout:
+
+                //Sign out
                 mAuth.signOut();
+                //Remove location tracker
+                locationProviderSingleton.removeLocationUpdates();
+                //Move to login activity
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 return true;

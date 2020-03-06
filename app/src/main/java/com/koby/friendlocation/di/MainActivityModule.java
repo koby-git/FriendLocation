@@ -1,7 +1,6 @@
 package com.koby.friendlocation.di;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.koby.friendlocation.FirebaseRepository;
+import com.koby.friendlocation.repository.FirebaseRepository;
 
 import dagger.Module;
 import dagger.Provides;
@@ -13,6 +12,4 @@ public class MainActivityModule {
     static FirebaseRepository provideFirebaseRepository(){
         return FirebaseRepository.getInstance();
     }
-
-
 }

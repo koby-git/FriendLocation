@@ -5,23 +5,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 
-import com.google.android.gms.location.ActivityRecognition;
-import com.google.android.gms.location.ActivityTransition;
-import com.google.android.gms.location.ActivityTransitionRequest;
-import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -36,7 +29,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.dynamiclinks.DynamicLink;
@@ -46,17 +38,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.koby.friendlocation.FirebaseRepository;
 import com.koby.friendlocation.activities.GroupSettingActivity;
+import com.koby.friendlocation.repository.FirebaseRepository;
 import com.koby.friendlocation.utils.Utils;
 import com.koby.friendlocation.R;
-import com.koby.friendlocation.services.TransitionIntentService;
 import com.koby.friendlocation.classes.model.Contact;
 import com.koby.friendlocation.classes.adapter.ContactsAdapter;
 import com.koby.friendlocation.classes.model.Group;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -111,7 +101,6 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
             }
         });
 
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -127,7 +116,11 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-
+        //Check permission
+        //if permission not granted - request permission
+        if (!Utils.checkPermission(this)) {
+            Utils.requestPermission(this);
+        }
 
         //Set contacts recylerview
         setRecyclerview(recyclerView);
@@ -147,13 +140,6 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
                     .build();                   // Creates a CameraPosition from the builder
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         });
-
-        //Check permission
-        //if permission not granted - request permission
-        if (!Utils.checkPermission(this)) {
-            Utils.requestPermission(this);
-        }
-
 
         //Get fused location provider client
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -201,7 +187,7 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
                 for (Location location : locationResult.getLocations()) {
 
                     //Set user location in database
-                    firebaseRepository.setUserLocation(location);
+                    firebaseRepository.setLocationUpdatesResult(MapsActivity.this,location);
 
                     //Update camera
                     LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
@@ -314,65 +300,6 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
 
             contactsAdapter.notifyDataSetChanged();
         });
-
-        // Activity Detection
-        registerHandler();
-    }
-
-    // Activity Detection
-    private void registerHandler() {
-        Intent intent = new Intent(this, TransitionIntentService.class);
-        PendingIntent transitionPendingIntent = PendingIntent.getService(this, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        List<ActivityTransition> transitions = new ArrayList<>();
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.IN_VEHICLE)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        .build());
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.STILL)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        .build());
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.ON_BICYCLE)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        .build());
-
-        transitions.add(
-                new ActivityTransition.Builder()
-                        .setActivityType(DetectedActivity.WALKING)
-                        .setActivityTransition(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
-                        .build());
-
-        ActivityTransitionRequest request = new ActivityTransitionRequest(transitions);
-        Task<Void> task = ActivityRecognition.getClient(this)
-                .requestActivityTransitionUpdates(request, transitionPendingIntent);
-
-        task.addOnSuccessListener(
-                new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void result) {
-                        // Handle success
-
-                    }
-                }
-        );
-
-        task.addOnFailureListener(
-                new OnFailureListener() {
-                    @Override
-                    public void onFailure(Exception e) {
-                        // Handle error
-                        e.printStackTrace();
-                    }
-                }
-        );
 
     }
 

@@ -2,7 +2,6 @@ package com.koby.friendlocation.di;
 
 import android.app.Application;
 
-import com.koby.friendlocation.BaseApplication;
 
 import javax.inject.Singleton;
 
