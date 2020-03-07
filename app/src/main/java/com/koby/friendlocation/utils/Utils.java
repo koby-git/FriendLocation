@@ -78,7 +78,7 @@ public  class Utils {
      * Posts a notification in the notification bar when a transition is detected.
      * If the user clicks the notification, control goes to the MainActivity.
      */
-    static void sendNotification(Context context, String notificationDetails) {
+    public static void sendNotification(Context context, String notificationDetails) {
         // Create an explicit content Intent that starts the main Activity.
         Intent notificationIntent = new Intent(context, MainActivity.class);
 

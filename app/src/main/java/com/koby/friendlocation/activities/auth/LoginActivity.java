@@ -29,6 +29,10 @@ import com.koby.friendlocation.R;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import dagger.android.support.DaggerAppCompatActivity;
 
 import static com.koby.friendlocation.classes.constant.FirebaseConstants.USERS;
@@ -40,59 +44,23 @@ public class LoginActivity extends DaggerAppCompatActivity {
     @Inject
     FirebaseAuth mAuth;
 
-    @Inject
-    @Nullable
-    FirebaseUser firebaseUser;
+    @BindView(R.id.login_progress_bar)
+    ProgressBar progressBar;
 
-    @Inject
-    FirebaseFirestore db;
+    @BindView(R.id.login_email)
+    EditText emailTv;
 
-    private Button login;
+    @BindView(R.id.login_password)
+    EditText passwordTv;
+
     private String email, password;
-    private ProgressBar progressBar;
-    private TextView forgotPasswordTv,registerTv;
-    private EditText emailTv, passwordTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
-        //UI element
-        passwordTv = findViewById(R.id.login_password_et);
-        emailTv = findViewById(R.id.login_email_et);
-        login = findViewById(R.id.login_login_btn);
-        progressBar = findViewById(R.id.login_progress_bar);
-        forgotPasswordTv = findViewById(R.id.login_forgot_password_tv);
-        registerTv = findViewById(R.id.login_regiter_tv);
-
-        //Login button
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(inputValidation()){
-                    login();
-                }
-            }
-        });
-
-        //Forget password buttton
-        forgotPasswordTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                forgotPassword();
-            }
-        });
-
-        //Register button
-        registerTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                register();
-            }
-        });
-
+        ButterKnife.bind(this);
     }
 
     //Check if user input is valid
@@ -112,63 +80,45 @@ public class LoginActivity extends DaggerAppCompatActivity {
         return true;
     }
 
-    //Login user
+    //Login button
+    @OnClick(R.id.login_button)
     public void login() {
 
-        progressBar.setVisibility(View.VISIBLE);
+        if (inputValidation()) {
 
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+            progressBar.setVisibility(View.VISIBLE);
+
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
 //                            startUserActivity();
 
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            progressBar.setVisibility(View.GONE);
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                progressBar.setVisibility(View.GONE);
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
-//    //Start main activity
-//    private void startUserActivity() {
-//        Log.d(TAG, "signInWithEmail:success");
-//
-//        db.collection(USERS).document(firebaseUser.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//
-//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                startActivity(intent);
-//                finish();
-//
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                progressBar.setVisibility(View.GONE);
-//                Toast.makeText(LoginActivity.this, "Authentication failed.",
-//                        Toast.LENGTH_SHORT).show();
-//
-//            }
-//        });
-//    }
-
-    //Forgert password activity button
+    ////Forget password button
+    @OnClick(R.id.login_forgot_password)
     public void forgotPassword() {
         startActivity(new Intent(getApplicationContext(), RecoverPasswordActivity.class));
     }
 
-    //Register Activity button
+    //Register button
+    @OnClick(R.id.login_regiter)
     public void register() {
         startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
     }

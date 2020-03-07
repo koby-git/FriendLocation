@@ -70,13 +70,13 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
     private ListenerRegistration registration;
     private GoogleMap mMap;
     private Group group;
-    private FusedLocationProviderClient fusedLocationClient;
-    private LocationCallback locationCallback;
-    private LocationRequest locationRequest;
-    private boolean requestingLocationUpdates = true;
+//    private FusedLocationProviderClient fusedLocationClient;
+//    private LocationCallback locationCallback;
+//    private LocationRequest locationRequest;
+//    private boolean requestingLocationUpdates = true;
     private ContactsAdapter contactsAdapter;
     private ArrayList<Contact> contacts;
-    protected Location lastLocation;
+//    protected Location lastLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,10 +142,10 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
         });
 
         //Get fused location provider client
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         //start listening to user location callback
-        startLocationCallback();
+//        startLocationCallback();
 
     }
 
@@ -174,29 +174,29 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
     }
 
     //start listening to user location callback
-    private void startLocationCallback() {
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-
-                if (locationResult == null) {
-                    Log.i(TAG,"Location is null");
-                }
-
-                //Get location callback
-                for (Location location : locationResult.getLocations()) {
-
-                    //Set user location in database
-                    firebaseRepository.setLocationUpdatesResult(MapsActivity.this,location);
-
-                    //Update camera
-                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                }
-            }
-        };
-
-    }
+//    private void startLocationCallback() {
+//        locationCallback = new LocationCallback() {
+//            @Override
+//            public void onLocationResult(LocationResult locationResult) {
+//
+//                if (locationResult == null) {
+//                    Log.i(TAG,"Location is null");
+//                }
+//
+//                //Get location callback
+//                for (Location location : locationResult.getLocations()) {
+//
+//                    //Set user location in database
+//                    firebaseRepository.setLocationUpdatesResult(MapsActivity.this,location);
+//
+//                    //Update camera
+//                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+//                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//                }
+//            }
+//        };
+//
+//    }
 
     //Send dynamicLink to the wanted contact
     private void sendDynamicLink(Uri shortLink) {
@@ -224,48 +224,48 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
         mMap.setMyLocationEnabled(true);
 
         //Try get last location and update camera
-        try {
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            // Got last known location and update camera
-                            if (location != null) {
-                                lastLocation = location;
-                                LatLng myLocation = new LatLng((location.getLatitude()), location.getLongitude());
-                                mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
-                                CameraPosition cameraPosition = new CameraPosition.Builder()
-                                        .target(myLocation)      // Sets the center of the map to Mountain View
-                                        .zoom(17)                   // Sets the zoom
-                                        .bearing(90)                // Sets the orientation of the camera to east
-                                        .tilt(30)                   // Sets the tilt of the camera to 30 degrees
-                                        .build();                   // Creates a CameraPosition from the builder
-                                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-                                //Make delay to update camera
-                                Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        //Create location request object
-                                        createLocationRequest();
-                                        //Start to provide location callback
-                                        startLocationUpdates();
-                                    }
-                                }, 2000);
-                            }else {
-                            }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    e.printStackTrace();
-                }
-            });
-
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            fusedLocationClient.getLastLocation()
+//                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+//                        @Override
+//                        public void onSuccess(Location location) {
+//                            // Got last known location and update camera
+//                            if (location != null) {
+//                                lastLocation = location;
+//                                LatLng myLocation = new LatLng((location.getLatitude()), location.getLongitude());
+//                                mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+//                                CameraPosition cameraPosition = new CameraPosition.Builder()
+//                                        .target(myLocation)      // Sets the center of the map to Mountain View
+//                                        .zoom(17)                   // Sets the zoom
+//                                        .bearing(90)                // Sets the orientation of the camera to east
+//                                        .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+//                                        .build();                   // Creates a CameraPosition from the builder
+//                                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//
+//                                //Make delay to update camera
+//                                Handler handler = new Handler();
+//                                handler.postDelayed(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        //Create location request object
+//                                        createLocationRequest();
+//                                        //Start to provide location callback
+//                                        startLocationUpdates();
+//                                    }
+//                                }, 2000);
+//                            }else {
+//                            }
+//                        }
+//                    }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    e.printStackTrace();
+//                }
+//            });
+//
+//        } catch (SecurityException e) {
+//            e.printStackTrace();
+//        }
     }
 
 
@@ -304,41 +304,41 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
     }
 
     //Create location request object
-    public void createLocationRequest() {
-        locationRequest = new LocationRequest();
-
-        // Sets the desired interval for active location updates. This interval is
-        // inexact. You may not receive updates at all if no location sources are available, or
-        // you may receive them slower than requested. You may also receive updates faster than
-        // requested if other applications are requesting location at a faster interval.
-        locationRequest.setInterval(3000);
-
-        // Sets the fastest rate for active location updates. This interval is exact, and your
-        // application will never receive updates faster than this value.
-        locationRequest.setFastestInterval(1500);
-
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
+//    public void createLocationRequest() {
+//        locationRequest = new LocationRequest();
+//
+//        // Sets the desired interval for active location updates. This interval is
+//        // inexact. You may not receive updates at all if no location sources are available, or
+//        // you may receive them slower than requested. You may also receive updates faster than
+//        // requested if other applications are requesting location at a faster interval.
+//        locationRequest.setInterval(3000);
+//
+//        // Sets the fastest rate for active location updates. This interval is exact, and your
+//        // application will never receive updates faster than this value.
+//        locationRequest.setFastestInterval(1500);
+//
+//        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//    }
 
     //If requesting location updates - start to provide location update
     @Override
     protected void onResume() {
         super.onResume();
-        if (requestingLocationUpdates) {
-            startLocationUpdates();
-        }
+//        if (requestingLocationUpdates) {
+//            startLocationUpdates();
+//        }
     }
 
     //Start to provide location update
-    private void startLocationUpdates() {
-        try {
-            fusedLocationClient.requestLocationUpdates(locationRequest,
-                    locationCallback,
-                    null /* Looper */);
-        }catch (SecurityException e){
-            e.printStackTrace();
-        }
-    }
+//    private void startLocationUpdates() {
+//        try {
+//            fusedLocationClient.requestLocationUpdates(locationRequest,
+//                    locationCallback,
+//                    null /* Looper */);
+//        }catch (SecurityException e){
+//            e.printStackTrace();
+//        }
+//    }
 
     /*
     Stop listen to users locations database
@@ -350,14 +350,14 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
         if(registration!=null) {
             registration.remove();
         }
-        stopLocationUpdates();
+//        stopLocationUpdates();
     }
 
 
-    private void stopLocationUpdates() {
-        requestingLocationUpdates = false;
-        fusedLocationClient.removeLocationUpdates(locationCallback);
-    }
+//    private void stopLocationUpdates() {
+//        requestingLocationUpdates = false;
+//        fusedLocationClient.removeLocationUpdates(locationCallback);
+//    }
 
     //Inflate options menu
 //    @Override

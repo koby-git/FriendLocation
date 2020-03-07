@@ -1,12 +1,13 @@
-package com.koby.friendlocation.fragments;
+package com.koby.friendlocation.activities.auth;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,26 +19,37 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.koby.friendlocation.classes.CameraProvider;
 import com.koby.friendlocation.R;
+import com.koby.friendlocation.classes.CameraProvider;
 import com.koby.friendlocation.classes.viewmodel.UsernameViewModel;
+import com.koby.friendlocation.fragments.UsernameFragment;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
 import static com.koby.friendlocation.classes.CameraProvider.REQUEST_OK;
 import static com.koby.friendlocation.classes.CameraProvider.REQUSET_PHOTO_FROM_GALLERY;
 
-public class ProfileFragment extends Fragment {
+public abstract class ProfileBaseFragment extends Fragment {
 
-    private ImageView imageView;
-    private FirebaseUser firebaseUser;
-    private GridLayout gridLayout;
-    private TextView username;
+    @BindView(R.id.profile_imageview)
+    public ImageView imageView;
+
+    FirebaseUser firebaseUser;
+
+    @BindView(R.id.profile_name)
+    public TextView username;
+
     private UsernameViewModel usernameViewModel;
-    private FloatingActionButton fab;
+
     private CameraProvider cameraProvider;
+
+    private Unbinder unbinder;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,21 +65,15 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        unbinder = ButterKnife.bind(this,view);
         //Init user
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        //UI element
-        gridLayout = view.findViewById(R.id.profile_grid);
-        username = view.findViewById(R.id.profile_name);
-        imageView = view.findViewById(R.id.profile_imageview);
-        fab = view.findViewById(R.id.profile_fab);
-
         //Init camera provider
         //TODO: Check builder pattern
-        cameraProvider = new CameraProvider(getActivity());
-        cameraProvider.setImageView(imageView);
+        cameraProvider = new CameraProvider(getActivity(),imageView);
 
-        username.setText(firebaseUser.getDisplayName());
+        setViewModelName(cameraProvider,username);
 
         //TODO: Check if do image view with view model
         //Observe username changes
@@ -78,28 +84,28 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        //Load user profile image
-        if (firebaseUser.getPhotoUrl()!=null){
-            Glide.with(view).load(firebaseUser.getPhotoUrl()).into(imageView);
+        loadImage(cameraProvider);
+
+    }
+
+    protected abstract void setViewModelName(CameraProvider cameraProvider,TextView username);
+
+    protected abstract void loadImage(CameraProvider cameraProvider);
+
+    @OnClick(R.id.profile_fab)
+    public void changeUserImage(){
+        if (cameraProvider.checkPermission()) {
+            cameraProvider.pickImage();
+
+        }else {
+            cameraProvider.requestPermission();
         }
+    }
 
-        //Change user profile image
-        fab.setOnClickListener(view1 -> {
-            if (cameraProvider.checkPermission()) {
-                cameraProvider.pickImage();
-            }else {
-                cameraProvider.requestPermission();
-                }
-        });
-
-        //Change user name
-        gridLayout.setOnClickListener(view12 -> {
-            UsernameFragment taskBottomSheet = new UsernameFragment();
-            Bundle args = new Bundle();
-            args.putString("username",firebaseUser.getDisplayName());
-            taskBottomSheet.setArguments(args);
-            taskBottomSheet.show(getFragmentManager(), "navigation bottomSheet");
-        });
+    @OnClick(R.id.profile_grid)
+    public void changeUserName(){
+        UsernameFragment taskBottomSheet = new UsernameFragment();
+        taskBottomSheet.show(getFragmentManager(), "navigation bottomSheet");
     }
 
     @Override
@@ -117,9 +123,17 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUSET_PHOTO_FROM_GALLERY && resultCode == RESULT_OK && data != null) {
-            cameraProvider.getImageUri(data);
+            Uri uri = cameraProvider.getImageUri(data);
+            uploadImage(cameraProvider,uri);
         }
     }
+
+    public abstract void uploadImage(CameraProvider cameraProvider,Uri uri);
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
 }
-
-

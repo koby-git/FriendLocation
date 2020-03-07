@@ -16,14 +16,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         RegisterFragment registerFragment = new RegisterFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
         transaction.replace(R.id.fragment, registerFragment);
         transaction.addToBackStack(null);
 
         transaction.commit();
-
-
     }
-
-
 }

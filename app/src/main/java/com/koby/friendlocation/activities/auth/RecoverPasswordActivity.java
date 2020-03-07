@@ -17,6 +17,9 @@ import com.koby.friendlocation.R;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import dagger.android.support.DaggerAppCompatActivity;
 
 public class RecoverPasswordActivity extends DaggerAppCompatActivity {
@@ -24,50 +27,50 @@ public class RecoverPasswordActivity extends DaggerAppCompatActivity {
     @Inject
     FirebaseAuth mAuth;
 
-    private EditText passwordEmailEt;
-    private Button resetPasswordBtn;
+    @BindView(R.id.recover_password_email)
+    EditText passwordEmailEt;
+
     private String passwordEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recover_password);
-
-        passwordEmailEt = findViewById(R.id.et_password_email);
-        resetPasswordBtn = findViewById(R.id.btn_reset_password);
-
-        //Reset password button
-        resetPasswordBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                passwordEmail = passwordEmailEt.getText().toString().trim();
-                //validate email pattern.
-                if (Patterns.EMAIL_ADDRESS.matcher(passwordEmail).matches()){
-
-                    //send password rest email
-                    recoverPassword();
-                }else {
-                    passwordEmailEt.setError("Email is not valid");
-                }
-            }
-        });
-
+        ButterKnife.bind(this);
     }
 
     //send password rest email
-    private void recoverPassword() {
+    @OnClick(R.id.recover_password_button)
+    public void recoverPassword() {
 
-        mAuth.sendPasswordResetEmail(passwordEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(RecoverPasswordActivity.this, "Password reset email sent!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(RecoverPasswordActivity.this,LoginActivity.class));
-                    finish();
-                }else {
-                    Toast.makeText(RecoverPasswordActivity.this, "Error in sending password reset email", Toast.LENGTH_SHORT).show();
+        passwordEmail = passwordEmailEt.getText().toString().trim();
+
+        if(emailValidation()) {
+            mAuth.sendPasswordResetEmail(passwordEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(RecoverPasswordActivity.this, "Password reset email sent!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(RecoverPasswordActivity.this, LoginActivity.class));
+                        finish();
+                    } else {
+                        Toast.makeText(RecoverPasswordActivity.this, "Error in sending password reset email", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
+            });
+        }
+    }
+
+    public boolean emailValidation(){
+        //validate email pattern.
+        if (Patterns.EMAIL_ADDRESS.matcher(passwordEmail).matches()){
+            //send password rest email
+            return true;
+        }else {
+            passwordEmailEt.setError("Email is not valid");
+            return false;
+        }
     }
 }
+
+

@@ -42,16 +42,14 @@ public class CameraProvider {
     private FirebaseStorage mStorageRef;
     public ImageView imageView;
 
-    public CameraProvider(Activity context) {
+    public CameraProvider(Activity context,ImageView imageView) {
         this.activity = context;
+        this.imageView = imageView;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mStorageRef = FirebaseStorage.getInstance();
-//        firebaseRepository = FirebaseRepository.getInstance();
+        firebaseRepository = FirebaseRepository.getInstance();
     }
 
-    public void setImageView(ImageView imageView){
-            this.imageView = imageView;
-    }
 
     public boolean checkPermission(){
        return ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -70,7 +68,7 @@ public class CameraProvider {
         activity.startActivityForResult(photoPickerIntent, REQUSET_PHOTO_FROM_GALLERY);
     }
 
-    public void getImageUri(Intent data) {
+    public Uri getImageUri(Intent data) {
         // Let's read picked image data - its URI
         Uri pickedImage = data.getData();
         // Let's read picked image path using content resolver
@@ -82,15 +80,12 @@ public class CameraProvider {
         File f = new File(imagePath);
         Uri contentUri = Uri.fromFile(f);
 
-        uploadImage(contentUri);
-
         cursor.close();
+        return contentUri;
 
     }
 
-
-
-    private void uploadImage(Uri contentUri) {
+    public void uploadUserImage(Uri contentUri) {
 
         final StorageReference ref = mStorageRef.getReference().child(USERS + "/" +firebaseUser.getUid()+".jpg");
         UploadTask uploadTask = ref.putFile(contentUri);
@@ -112,7 +107,7 @@ public class CameraProvider {
                 if (task.isSuccessful()) {
                     Uri downloadUri;
                     downloadUri = task.getResult();
-                    updateProfile(downloadUri);
+                    updateUserProfile(downloadUri);
                 } else {
                     // Handle failures
                     // ...
@@ -122,7 +117,7 @@ public class CameraProvider {
     }
 
     //Update profile image
-    private void updateProfile(Uri contentUri) {
+    private void updateUserProfile(Uri contentUri) {
 
         UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(contentUri).build();
@@ -147,4 +142,22 @@ public class CameraProvider {
 
     }
 
+    public void uploadGroupImage(Uri contentUri){};
+
+    public String getGroupDisplayName() {
+        return "";
+    }
+
+    public String getUserDisplayName() {
+        return firebaseUser.getDisplayName();
+    }
+
+    public void loadGroupImage() {
+    }
+
+    public void loadUserImage() {
+        if (firebaseUser.getPhotoUrl()!=null){
+            Glide.with(activity).load(firebaseUser.getPhotoUrl()).into(imageView);
+        }
+    }
 }

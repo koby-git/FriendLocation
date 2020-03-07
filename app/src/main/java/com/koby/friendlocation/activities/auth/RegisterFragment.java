@@ -29,18 +29,28 @@ import com.koby.friendlocation.R;
 import com.koby.friendlocation.classes.viewmodel.UsernameViewModel;
 import com.koby.friendlocation.repository.FirebaseRepository;
 
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.OnClick;
+
 public class RegisterFragment extends Fragment {
 
     private static final String TAG = RegisterFragment.class.getSimpleName();
 
-
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    @Inject
+    FirebaseAuth mAuth;
 
     //Ui element
-    private Button registerBtn;
-    private EditText emailTv, passwordTv;
+    @BindView(R.id.register_email)
+    EditText emailTextView;
+    @BindView(R.id.register_password)
+    EditText passwordTextView;
+
+    @BindView(R.id.register_progress_bar)
+    ProgressBar progressBar;
+
     private String email, password;
-    private ProgressBar progressBar;
     private UsernameViewModel usernameViewModel;
 
     @Nullable
@@ -54,41 +64,19 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Init ui element
-        passwordTv = view.findViewById(R.id.register_password);
-        progressBar = view.findViewById(R.id.register_progress_bar);
-        emailTv = view.findViewById(R.id.register_email);
-        registerBtn = view.findViewById(R.id.register_btn);
-
         //ViewModel username
         usernameViewModel = ViewModelProviders.of(requireActivity()).get(UsernameViewModel.class);
-
-        //Valid input and register user
-        registerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(validateInput()){
-                    register();
-                };
-            }
-        });
-
 
     }
 
 
     //Validate user input
     public boolean validateInput() {
-
-        email = emailTv.getText().toString();
-        password = passwordTv.getText().toString().trim();
-
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches() || email.equals("")) {
-            emailTv.setError("כתובת האימייל אינה תקינה");
+            emailTextView.setError("כתובת האימייל אינה תקינה");
             return false;
         }else if (TextUtils.isEmpty(password)){
-            passwordTv.setError("סיסמא לא נכונה");
+            passwordTextView.setError("סיסמא לא נכונה");
             return false;
         } else {
             progressBar.setVisibility(View.VISIBLE);
@@ -96,39 +84,48 @@ public class RegisterFragment extends Fragment {
         }
     }
 
-    private void register() {
+    @OnClick(R.id.register_btn)
+    public void register() {
 
-        mAuth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                setUser();
+        email = emailTextView.getText().toString();
+        password = passwordTextView.getText().toString().trim();
+
+        if(validateInput()) {
+            mAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                @Override
+                public void onSuccess(AuthResult authResult) {
+                    setUser();
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success");
-                RegisterProfileFragment profileFragment = new RegisterProfileFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    RegisterProfileFragment profileFragment = new RegisterProfileFragment();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment, profileFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
 
-                transaction.replace(R.id.fragment, profileFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                // If sign in fails, display a message to the user.
-                progressBar.setVisibility(View.GONE);
-                e.printStackTrace();
-                Toast.makeText(getActivity(), "createUser failed.",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // If sign in fails, display a message to the user.
+                    progressBar.setVisibility(View.GONE);
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), "createUser failed.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
+    //Set new user
     private void setUser() {
 
         String guest = "אורח";
+
+        //Set user in database
         FirebaseRepository.getInstance().setProfileUsername(guest);
-        //Update name in firebaseAuth
+
+        //Update name in FirebaseAuth
         UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
                 .setDisplayName(guest).build();
 

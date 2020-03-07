@@ -37,6 +37,8 @@ import com.koby.friendlocation.classes.model.Group;
 import java.io.File;
 import java.util.UUID;
 
+import butterknife.BindView;
+
 import static com.koby.friendlocation.classes.CameraProvider.REQUSET_PHOTO_FROM_GALLERY;
 import static com.koby.friendlocation.classes.constant.FirebaseConstants.GROUPS;
 import static com.koby.friendlocation.classes.constant.FirebaseConstants.USERS;
@@ -44,6 +46,8 @@ import static com.koby.friendlocation.classes.constant.FirebaseConstants.USERS;
 public class AddGroupActivity extends AppCompatActivity {
 
     private static final int REQUEST_OK = 2;
+
+
     EditText groupNameEditText;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
