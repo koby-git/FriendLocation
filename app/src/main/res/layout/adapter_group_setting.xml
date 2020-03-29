@@ -4,18 +4,16 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-
+    
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/adapter_contact_image"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
         android:layout_margin="10dp"
         app:srcCompat="@drawable/ic_account_circle"
         android:layout_gravity="center"/>
 
     <TextView
-        android:textStyle="bold"
         android:textColor="@color/colorBlack"
         android:id="@+id/contact_name"
         android:textSize="24dp"

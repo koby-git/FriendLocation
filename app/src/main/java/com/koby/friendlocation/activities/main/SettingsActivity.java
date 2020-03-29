@@ -8,7 +8,9 @@ import android.os.Bundle;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.fragments.SettingsFragment;
 
-public class SettingsActivity extends AppCompatActivity {
+import dagger.android.support.DaggerAppCompatActivity;
+
+public class SettingsActivity extends DaggerAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

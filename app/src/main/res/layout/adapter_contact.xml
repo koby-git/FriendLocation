@@ -8,7 +8,7 @@
     android:background="@drawable/border_bottom">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/adapter_contact_image"
+        android:id="@+id/contact_adapter_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_margin="10dp"
@@ -25,7 +25,7 @@
         <TextView
             android:textStyle="bold"
             android:textColor="@color/colorBlack"
-            android:id="@+id/contact_name"
+            android:id="@+id/contact_adapter_name"
             android:textSize="18dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
 
         <TextView
             android:textColor="@color/colorBlack"
-            android:id="@+id/contact_street"
+            android:id="@+id/contact_adapter_street"
             android:textSize="18dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             android:maxLines="1"/>
 
         <TextView
-            android:id="@+id/contact_date"
+            android:id="@+id/contact_adapter_date"
             android:textSize="18dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

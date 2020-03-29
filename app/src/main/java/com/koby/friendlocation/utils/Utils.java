@@ -50,7 +50,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.koby.friendlocation.classes.constant.FirebaseConstants.USERS;
+import static com.koby.friendlocation.constant.FirebaseConstants.USERS;
 
 /**
  * Utility methods used in this sample.

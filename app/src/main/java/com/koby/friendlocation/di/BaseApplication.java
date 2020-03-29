@@ -1,7 +1,5 @@
 package com.koby.friendlocation.di;
 
-import com.koby.friendlocation.di.DaggerAppComponent;
-
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
 

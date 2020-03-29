@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.koby.friendlocation.R;
+import com.koby.friendlocation.fragments.profile.RegisterFragment;
 
 public class RegisterActivity extends AppCompatActivity {
 

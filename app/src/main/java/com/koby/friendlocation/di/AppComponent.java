@@ -3,6 +3,7 @@ package com.koby.friendlocation.di;
 import android.app.Application;
 
 
+
 import javax.inject.Singleton;
 
 import dagger.BindsInstance;
@@ -19,6 +20,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
         }
 )
 public interface AppComponent extends AndroidInjector<BaseApplication> {
+
 
     @Component.Builder
     interface Builder{

@@ -3,20 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
-        app:title="פרופיל">
+        android:title="@string/profile">
         <Preference
-            app:key="profile"
-            app:title="פרופיל"
-            app:icon="@drawable/ic_person"
-            app:fragment="com.koby.friendlocation.activities.auth.ProfileFragment">
-        </Preference>
+                app:key="profile"
+                app:title="פרופיל"
+                app:icon="@drawable/ic_person"
+                app:fragment="com.koby.friendlocation.fragments.profile.UserProfileFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:title="פרטיות">
-        <SwitchPreferenceCompat
-            app:key="privacy"
-            app:title="הפעל מצב נסתר"
+        android:title="">
+        <SwitchPreference
+            app:key="location"
+            app:title="התראות מיקום"
+            android:defaultValue="true"
+            android:summaryOff="הפעל התראות מיקום"
+            android:summaryOn="כבה התראות מיקום"
             app:icon="@drawable/ic_hidden_eye" />
+
+        <Preference
+            app:key="logout"
+            app:title="התנתק"
+            app:icon="@drawable/ic_logout"/>
     </PreferenceCategory>
+
 </PreferenceScreen>

@@ -24,7 +24,7 @@
         <activity android:name=".activities.auth.LoginActivity"
             />
         <activity
-            android:name=".activities.GroupSettingActivity"
+            android:name=".activities.maps.GroupSettingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.main.AddGroupActivity" />
         <activity
@@ -49,9 +49,8 @@
         <activity android:name=".activities.main.MainActivity" />
         <activity android:name=".activities.auth.RecoverPasswordActivity" />
         <activity android:name=".activities.auth.RegisterActivity" />
-        <activity android:name=".activities.InviteContactActivity" />
         <activity
-            android:name=".activities.InviteReciveActivity"
+            android:name=".activities.main.InviteReceiveActivity"
             android:launchMode="singleTask">
             <intent-filter
                 android:autoVerify="true"
@@ -67,7 +66,7 @@
 
             </intent-filter>
         </activity>
-        <activity android:name=".activities.SplashScreenActivity"
+        <activity android:name=".activities.auth.SplashScreenActivity"
             android:theme="@style/AppThemeSplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

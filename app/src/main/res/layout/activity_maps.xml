@@ -56,9 +56,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="Add a new member"
+            android:text="@string/add_new_member"
             app:icon="@drawable/ic_person_add_white"
-            app:iconGravity="textEnd"/>
+            app:iconGravity="textStart"/>
 
     </LinearLayout>
 

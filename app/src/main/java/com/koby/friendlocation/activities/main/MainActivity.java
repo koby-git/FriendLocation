@@ -1,35 +1,30 @@
 package com.koby.friendlocation.activities.main;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 
-import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.koby.friendlocation.BuildConfig;
+import com.bumptech.glide.Glide;
 import com.koby.friendlocation.activities.maps.MapsActivity;
-import com.koby.friendlocation.classes.adapter.FirestoreUiGroupAdapter;
-import com.koby.friendlocation.classes.LocationProvider;
+import com.koby.friendlocation.view.adapter.FirestoreUiGroupAdapter;
 import com.koby.friendlocation.R;
-import com.koby.friendlocation.classes.model.Group;
-import com.koby.friendlocation.classes.adapter.GroupAdapter;
-import com.koby.friendlocation.activities.auth.LoginActivity;
+import com.koby.friendlocation.model.Group;
+import com.koby.friendlocation.view.adapter.GroupAdapter;
 
+import com.koby.friendlocation.providers.LocationProvider;
 import com.koby.friendlocation.repository.FirebaseRepository;
 import com.koby.friendlocation.utils.Utils;
 
@@ -44,21 +39,13 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
-    @Inject
-    FirebaseAuth mAuth;
 
-    @Inject
-    FirebaseRepository firebaseRepository;
+    @Inject FirebaseRepository firebaseRepository;
+    @Inject LocationProvider locationProvider;
 
-    @Inject
-    FirebaseFirestore db;
-
-    @BindView(R.id.main_recycler_view)
-    RecyclerView recyclerView;
+    @BindView(R.id.main_recycler_view) RecyclerView recyclerView;
 
     private FirestoreUiGroupAdapter mAdapter;
-
-    private LocationProvider locationProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,23 +60,10 @@ public class MainActivity extends DaggerAppCompatActivity {
             Utils.requestPermissions(MainActivity.this);
         }
 
-        //Init LocationProvider
-        locationProvider = LocationProvider.getInstance(MainActivity.this);
-
         setGroupRecyclerView();
 
-        //Choose group
-        mAdapter.setOnItemClickListener(new GroupAdapter.onItemClickListener() {
-            @Override
-            public void onItemClick(Group group) {
-                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                intent.putExtra("group",group);
-                startActivity(intent);
-            }
-        });
-
         //First time request
-        if(Utils.getRequestingLocationUpdates(MainActivity.this)){
+        if (Utils.getRequestingLocationUpdates(MainActivity.this)) {
             locationProvider.requestLocationUpdates();
         }
     }
@@ -129,22 +103,49 @@ public class MainActivity extends DaggerAppCompatActivity {
             }
         }
     }
-
     //Create group fab
     @OnClick(R.id.main_fab_create)
-    public void crateGroup(){
+    public void crateGroup() {
         startActivity(new Intent(MainActivity.this, AddGroupActivity.class));
     }
 
     //set FirestoreUI recycler view
     private void setGroupRecyclerView() {
 
-        FirestoreRecyclerOptions<Group> options  = firebaseRepository.getGroupsOptions();
-
-        mAdapter = new FirestoreUiGroupAdapter(options);
+        mAdapter = new FirestoreUiGroupAdapter(firebaseRepository.getGroupsOptions(),this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
+
+        //Choose group
+        mAdapter.setOnItemClickListener(new GroupAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(Group group) {
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                intent.putExtra("group", group);
+                startActivity(intent);
+            }
+        });
+
+        //Zoom group image
+        mAdapter.setImageClickListener(new GroupAdapter.onImageClickListener() {
+            @Override
+            public void onImageClick(String imageUri) {
+                LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+                View view =inflater.inflate(R.layout.dialog_image, null);
+                ImageView imageView = view.findViewById(R.id.dialog_image);
+                Glide.with(MainActivity.this)
+                        .load(imageUri)
+                        .placeholder(R.drawable.ic_delete_forever)
+                        .fallback(R.drawable.ic_group_grey)
+                        .centerCrop()
+                        .into(imageView);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setView(view);
+                builder.show();
+            }
+        });
     }
 
     //Inflate Options menu
@@ -162,17 +163,8 @@ public class MainActivity extends DaggerAppCompatActivity {
             case R.id.action_setting:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
-            case R.id.action_logout:
 
-                //Sign out
-                mAuth.signOut();
-                //Remove location tracker
-                locationProvider.removeLocationUpdates();
-                //Move to login activity
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
-                return true;
-            default:
+                default:
                 return super.onOptionsItemSelected(item);
         }
     }
@@ -181,7 +173,6 @@ public class MainActivity extends DaggerAppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         mAdapter.startListening();
     }
 
