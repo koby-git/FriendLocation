@@ -25,17 +25,21 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,6 +47,7 @@ import com.google.firebase.firestore.SetOptions;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.activities.main.MainActivity;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,6 +56,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import static com.koby.friendlocation.constant.FirebaseConstants.USERS;
+import static com.koby.friendlocation.providers.CameraProvider.REQUEST_OK;
 
 /**
  * Utility methods used in this sample.
@@ -231,4 +237,6 @@ public  class Utils {
                         Manifest.permission.ACCESS_BACKGROUND_LOCATION },
                 REQUEST_PERMISSIONS_REQUEST_CODE);
     }
+
+
 }

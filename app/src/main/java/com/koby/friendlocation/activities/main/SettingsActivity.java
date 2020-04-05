@@ -1,12 +1,11 @@
 package com.koby.friendlocation.activities.main;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 
 import com.koby.friendlocation.R;
-import com.koby.friendlocation.fragments.SettingsFragment;
+import com.koby.friendlocation.fragments.settings.SettingsFragment;
 
 import dagger.android.support.DaggerAppCompatActivity;
 

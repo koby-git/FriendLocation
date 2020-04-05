@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,42 +26,37 @@ import com.koby.friendlocation.repository.FirebaseRepository;
 
 import java.io.File;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
+import javax.inject.Inject;
 
 public class CameraProvider {
 
     public static final int REQUSET_PHOTO_FROM_GALLERY = 1;
     public static final int REQUEST_OK = 2;
+    private static final String TAG = CameraProvider.class.getSimpleName();
 
     private Activity activity;
     private FirebaseUser firebaseUser;
     private FirebaseRepository firebaseRepository;
-    private FirebaseStorage mStorageRef;
     public ImageView imageView;
     public Uri imageUri;
 
-    public CameraProvider(Activity context,ImageView imageView) {
+    public CameraProvider(Activity context,ImageView imageView,FirebaseRepository firebaseRepository) {
         this.activity = context;
         this.imageView = imageView;
+        this.firebaseRepository = firebaseRepository;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        mStorageRef = FirebaseStorage.getInstance();
-        firebaseRepository = FirebaseRepository.getInstance();
+//        firebaseRepository = FirebaseRepository.getInstance();
     }
 
     public boolean checkPermission(){
        return ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED;
     }
+
     public void requestPermission(){
         ActivityCompat.requestPermissions(activity,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_OK);
 
-    }
-
-    public void pickImage() {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-        activity.startActivityForResult(photoPickerIntent, REQUSET_PHOTO_FROM_GALLERY);
     }
 
     public Uri getImageUri(Intent data) {

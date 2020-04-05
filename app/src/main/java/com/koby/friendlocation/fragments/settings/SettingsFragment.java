@@ -1,4 +1,4 @@
-package com.koby.friendlocation.fragments;
+package com.koby.friendlocation.fragments.settings;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,38 +23,19 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasAndroidInjector;
 import dagger.android.support.AndroidSupportInjection;
 
-import static android.app.Activity.RESULT_OK;
-import static com.koby.friendlocation.providers.CameraProvider.REQUSET_PHOTO_FROM_GALLERY;
-
 public class SettingsFragment extends PreferenceFragmentCompat implements HasAndroidInjector {
 
-    @Inject
-    DispatchingAndroidInjector<Object> androidInjector;
-
-    @Override
-    public void onAttach(Context context) {
-        AndroidSupportInjection.inject(this);
-        super.onAttach(context);
-    }
-
-    @Override
-    public AndroidInjector<Object> androidInjector() {
-        return androidInjector;
-    }
-
-    @Inject
-    LocationProvider locationProvider;
-
-    @Inject
-    FirebaseAuth mAuth;
+    @Inject DispatchingAndroidInjector<Object> androidInjector;
+    @Inject LocationProvider locationProvider;
+    @Inject FirebaseAuth mAuth;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
 
         SwitchPreference privacySwitchPreference = findPreference("location");
-
         Preference logoutPreference = findPreference("logout");
+
         logoutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -70,18 +51,26 @@ public class SettingsFragment extends PreferenceFragmentCompat implements HasAnd
         });
 
         privacySwitchPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-            if ((Boolean)newValue) {
-                System.out.println("location enabled");
-                Utils.setRequestingLocationUpdates(getContext(),true);
+            if ((Boolean) newValue) {
+                Utils.setRequestingLocationUpdates(getContext(), true);
                 locationProvider.requestLocationUpdates();
-            }else {
-                System.out.println("location disable");
-                Utils.setRequestingLocationUpdates(getContext(),false);
+            } else {
+                Utils.setRequestingLocationUpdates(getContext(), false);
                 locationProvider.removeLocationUpdates();
             }
             return true;
         });
     }
 
+    @Override
+    public void onAttach(Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
+    }
+
+    @Override
+    public AndroidInjector<Object> androidInjector() {
+        return androidInjector;
+    }
 
 }

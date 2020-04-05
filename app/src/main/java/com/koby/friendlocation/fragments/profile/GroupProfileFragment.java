@@ -2,17 +2,26 @@ package com.koby.friendlocation.fragments.profile;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Task;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.activities.main.MainActivity;
 import com.koby.friendlocation.fragments.nameDialogFragment.GroupNameFragment;
+import com.koby.friendlocation.repository.FirebaseRepository;
 
 public class GroupProfileFragment extends BaseProfileFragment {
+
+    public static final String TAG = GroupProfileFragment.class.getSimpleName();
+
+    Uri imagePathUri = null;
 
     //inflate menu
     @Override
@@ -26,21 +35,34 @@ public class GroupProfileFragment extends BaseProfileFragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_done){
             createGroup();
-            startActivity(new Intent(getContext(), MainActivity.class));
-            getActivity().finish();
         }
         return true;
     }
 
     private void createGroup() {
         String groupName = username.getText().toString();
-//        Uri imagePathUri = cameraProvider.getImageUri();
-//        if (imagePathUri == null) {
-//            FirebaseRepository.getInstance().setGroup(groupName);
-//        }else {
-//            FirebaseRepository.getInstance().setGroup(groupName, imagePathUri);
-//        }
+
+        if (groupName.isEmpty()){
+            username.setError("נא למלא שם קבוצה");
+            return;
+        }
+
+        firebaseRepository
+                .setGroup(groupName, imagePathUri).addOnTaskCompleteListener(new FirebaseRepository.OnBatchCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if (task.isSuccessful()) {
+                    startActivity(new Intent(getActivity(), MainActivity.class));
+                    getActivity().finish();
+                } else {
+                    Log.i(TAG, task.getException().toString());
+                    Toast.makeText(getContext(), task.getException().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
+
 
     @Override
     protected void loadNameFragment() {
@@ -50,7 +72,8 @@ public class GroupProfileFragment extends BaseProfileFragment {
 
     @Override
     public void uploadImage(Uri uri) {
-//        FirebaseRepository.getInstance().uploadGroupImage(uri,group.getGroupUid());
-        System.out.println("333333333");
+        imagePathUri = uri;
+        Glide.with(getContext()).load(uri).centerCrop().into(imageView);
     }
+
 }

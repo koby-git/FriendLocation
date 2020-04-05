@@ -46,16 +46,13 @@ public class RecoverPasswordActivity extends DaggerAppCompatActivity {
         passwordEmail = passwordEmailEt.getText().toString().trim();
 
         if(emailValidation()) {
-            mAuth.sendPasswordResetEmail(passwordEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(RecoverPasswordActivity.this, "Password reset email sent!", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(RecoverPasswordActivity.this, LoginActivity.class));
-                        finish();
-                    } else {
-                        Toast.makeText(RecoverPasswordActivity.this, "Error in sending password reset email", Toast.LENGTH_SHORT).show();
-                    }
+            mAuth.sendPasswordResetEmail(passwordEmail).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(RecoverPasswordActivity.this, "סיסמא נשלחה בהצלחה", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(RecoverPasswordActivity.this, LoginActivity.class));
+                    finish();
+                } else {
+                    Toast.makeText(RecoverPasswordActivity.this, getString(R.string.error), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -67,7 +64,7 @@ public class RecoverPasswordActivity extends DaggerAppCompatActivity {
             //send password rest email
             return true;
         }else {
-            passwordEmailEt.setError("Email is not valid");
+            passwordEmailEt.setError(getString(R.string.email_not_valid));
             return false;
         }
     }

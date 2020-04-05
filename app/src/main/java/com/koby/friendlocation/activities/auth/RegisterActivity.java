@@ -8,7 +8,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.fragments.profile.RegisterFragment;
 
-public class RegisterActivity extends AppCompatActivity {
+import dagger.android.support.DaggerAppCompatActivity;
+
+public class RegisterActivity extends DaggerAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +20,6 @@ public class RegisterActivity extends AppCompatActivity {
         RegisterFragment registerFragment = new RegisterFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment, registerFragment);
-        transaction.addToBackStack(null);
-
         transaction.commit();
     }
 }

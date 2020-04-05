@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign In"
+        android:text="@string/sign_in"
         android:layout_gravity="center"
         android:textSize="50dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
@@ -22,21 +22,21 @@
         android:id="@+id/register_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="@string/email"
         android:layout_marginTop="15dp"
         android:drawablePadding="8dp"
         android:inputType="textEmailAddress"
         android:singleLine="true"
         android:textColor="@color/colorBlack"
-        android:drawableLeft="@drawable/ic_mail_outline"/>
+        android:drawableRight="@drawable/ic_mail_outline"/>
 
     <EditText
         android:id="@+id/register_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="@string/password"
         android:drawablePadding="8dp"
-        android:drawableLeft="@drawable/ic_lock_outline"
+        android:drawableRight="@drawable/ic_lock_outline"
         android:inputType="textPassword"
         android:singleLine="true"
         android:textColor="@color/colorBlack" />
@@ -44,8 +44,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="sign in"
-
+        android:text="@string/sign_in"
         android:layout_marginTop="30dp"
         android:id="@+id/register_btn" />
 

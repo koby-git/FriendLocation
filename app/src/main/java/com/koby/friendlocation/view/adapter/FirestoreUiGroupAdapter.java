@@ -59,6 +59,7 @@ public class FirestoreUiGroupAdapter extends FirestoreRecyclerAdapter<Group, Fir
             Glide.with(context)
                     .load(Uri.parse(model.getGroupImage()))
                     .circleCrop()
+
                     .into(holder.groupImageView);
         }
     }

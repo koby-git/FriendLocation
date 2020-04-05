@@ -14,7 +14,7 @@ public class GroupListViewModel extends ViewModel {
     FirebaseRepository firebaseRepository;
 
     public GroupListViewModel() {
-        this.firebaseRepository = FirebaseRepository.getInstance();
+//        this.firebaseRepository = FirebaseRepository.getInstance();
     }
 
     private MutableLiveData<List<Group>> groups;

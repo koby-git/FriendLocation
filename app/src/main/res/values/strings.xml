@@ -100,6 +100,14 @@
     <string name="action_settings">Settings</string>
     <string name="add_new_member">הוסף משתמש</string>
     <string name="profile">פרופיל</string>
+    <string name="authentacaion_failed">הרשמה נכשלה</string>
+    <string name="sign_in">הרשמה</string>
+    <string name="password">סיסמא</string>
+    <string name="email_not_valid">נא לרשום כתובת אימייל תקינה</string>
+    <string name="error">שגיאה</string>
+    <string name="exit_group">יציאה מהקבוצה</string>
+    <string name="join">הצטרפ/י</string>
+    <string name="Add_member">הוסף משתמש</string>
 
 
     <plurals name="num_locations_reported">

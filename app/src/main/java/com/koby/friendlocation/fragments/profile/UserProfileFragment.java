@@ -3,6 +3,7 @@ package com.koby.friendlocation.fragments.profile;
 import android.net.Uri;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.koby.friendlocation.fragments.nameDialogFragment.UserNameFragment;
 import com.koby.friendlocation.repository.FirebaseRepository;
 
@@ -27,17 +28,19 @@ public class UserProfileFragment extends BaseProfileFragment {
     //Upload chosen image
     @Override
     protected void uploadImage(Uri uri) {
-        System.out.println("2222222222");
-        FirebaseRepository.getInstance().uploadUserImage(uri);
+        Glide.with(getContext()).load(uri).centerCrop().into(imageView);
+        firebaseRepository.uploadUserImage(uri);
     }
-
 
     @Override
     public void onStart() {
         super.onStart();
+        //Load user profile name and image
         setViewModelName(username);
         loadImage();
     }
+
+
 }
 
 

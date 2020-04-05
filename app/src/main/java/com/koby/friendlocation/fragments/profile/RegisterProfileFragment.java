@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.activities.main.MainActivity;
 import com.koby.friendlocation.fragments.nameDialogFragment.UserNameFragment;
-import com.koby.friendlocation.repository.FirebaseRepository;
 
 public class RegisterProfileFragment extends BaseProfileFragment {
 
@@ -23,7 +22,8 @@ public class RegisterProfileFragment extends BaseProfileFragment {
 
     @Override
     public void uploadImage(Uri uri) {
-        FirebaseRepository.getInstance().uploadUserImage(uri);}
+        firebaseRepository.uploadUserImage(uri);
+    }
 
 
     //inflate menu

@@ -49,24 +49,15 @@ public class LocationProvider {
         mContext = application;
     }
 
-    public FusedLocationProviderClient getFusedLocationProviderClient(){
+    public FusedLocationProviderClient getFusedLocationProviderClient() {
         return mFusedLocationClient;
     }
+
     public void createLocationRequest() {
         mLocationRequest = new LocationRequest();
-
-        // Sets the desired interval for active location updates. This interval is
-        // inexact. You may not receive updates at all if no location sources are available, or
-        // you may receive them slower than requested. You may also receive updates faster than
-        // requested if other applications are requesting location at a faster interval.
         mLocationRequest.setInterval(UPDATE_INTERVAL);
-
-        // Sets the fastest rate for active location updates. This interval is exact, and your
-        // application will never receive updates faster than this value.
         mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL);
-
         mLocationRequest.setMaxWaitTime(MAX_WAIT_TIME);
-
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -84,23 +75,12 @@ public class LocationProvider {
     public void removeLocationUpdates() {
         Log.i(TAG, "Removing location updates");
         Utils.setRequestingLocationUpdates(mContext, false);
-
         mFusedLocationClient.removeLocationUpdates(getPendingIntent());
     }
 
     private PendingIntent getPendingIntent() {
-
         Intent intent = new Intent(mContext, LocationUpdatesBroadcastReceiver.class);
         intent.setAction(LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES);
         return PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    public void getLastLocation() {
-        mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-
-            }
-        });
     }
 }

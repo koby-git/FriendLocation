@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -31,7 +30,9 @@ import com.koby.friendlocation.repository.FirebaseRepository;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import dagger.android.support.DaggerFragment;
 
 public class RegisterFragment extends DaggerFragment {
@@ -39,7 +40,7 @@ public class RegisterFragment extends DaggerFragment {
     private static final String TAG = RegisterFragment.class.getSimpleName();
 
     @Inject FirebaseAuth mAuth;
-
+    @Inject FirebaseRepository firebaseRepository;
     //Ui element
     @BindView(R.id.register_email) EditText emailTextView;
     @BindView(R.id.register_password) EditText passwordTextView;
@@ -48,6 +49,7 @@ public class RegisterFragment extends DaggerFragment {
     //Private vars
     private String email, password;
     private NameViewModel usernameViewModel;
+    private Unbinder unbinder;
 
     @Nullable
     @Override
@@ -60,6 +62,7 @@ public class RegisterFragment extends DaggerFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        unbinder = ButterKnife.bind(this,view);
         //ViewModel username
         usernameViewModel = ViewModelProviders.of(requireActivity()).get(NameViewModel.class);
 
@@ -96,9 +99,7 @@ public class RegisterFragment extends DaggerFragment {
                     RegisterProfileFragment profileFragment = new RegisterProfileFragment();
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.replace(R.id.fragment, profileFragment);
-                    transaction.addToBackStack(null);
                     transaction.commit();
-
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -119,7 +120,7 @@ public class RegisterFragment extends DaggerFragment {
         String guest = "אורח";
 
         //Set user in database
-        FirebaseRepository.getInstance().setUserProfileName(guest);
+        firebaseRepository.setUserProfileName(guest);
 
         //Update name in FirebaseAuth
         UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
@@ -131,7 +132,6 @@ public class RegisterFragment extends DaggerFragment {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "User profile updated.");
-                            Toast.makeText(getContext(), "User profile updated", Toast.LENGTH_SHORT).show();
                             usernameViewModel.setName(guest);
                         }
                     }

@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.providers.CameraProvider;
+import com.koby.friendlocation.repository.FirebaseRepository;
 import com.koby.friendlocation.viewmodel.NameViewModel;
 
 import javax.inject.Inject;
@@ -35,10 +36,14 @@ import static android.app.Activity.RESULT_OK;
 import static com.koby.friendlocation.providers.CameraProvider.REQUEST_OK;
 import static com.koby.friendlocation.providers.CameraProvider.REQUSET_PHOTO_FROM_GALLERY;
 
-public abstract class BaseProfileFragment extends Fragment {
+public abstract class BaseProfileFragment extends DaggerFragment{
 
-//    @Inject @Nullable
-    FirebaseUser firebaseUser;
+    @Inject
+    @Nullable
+    public FirebaseUser firebaseUser;
+
+    @Inject
+    public FirebaseRepository firebaseRepository;
 
     @BindView(R.id.profile_name) public TextView username;
     @BindView(R.id.profile_imageview) public ImageView imageView;
@@ -67,7 +72,7 @@ public abstract class BaseProfileFragment extends Fragment {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //Init camera provider
-        cameraProvider = new CameraProvider(getActivity(),imageView);
+        cameraProvider = new CameraProvider(getActivity(),imageView,firebaseRepository);
 
         //Observe username changes
         usernameViewModel.getName().observe(requireActivity(), new Observer<String>() {
@@ -78,11 +83,17 @@ public abstract class BaseProfileFragment extends Fragment {
         });
     }
 
+    public void pickImage() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, REQUSET_PHOTO_FROM_GALLERY);
+    }
+
     //Image fab
     @OnClick(R.id.profile_fab)
     public void changeImage(){
         if (cameraProvider.checkPermission()) {
-            cameraProvider.pickImage();
+            pickImage();
         }else {
             cameraProvider.requestPermission();
         }
@@ -97,7 +108,7 @@ public abstract class BaseProfileFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_OK && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            cameraProvider.pickImage();
+            pickImage();
         } else {
             Toast.makeText(getContext(), "please provide permission", Toast.LENGTH_SHORT).show();
         }
@@ -106,13 +117,9 @@ public abstract class BaseProfileFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("gggggggg");
         if(requestCode == REQUSET_PHOTO_FROM_GALLERY && resultCode == RESULT_OK && data != null) {
-            System.out.println("444444444");
             Uri imageUri = cameraProvider.getImageUri(data);
             uploadImage(imageUri);
-        }else {
-            System.out.println("55555555");
         }
     }
 
@@ -126,3 +133,5 @@ public abstract class BaseProfileFragment extends Fragment {
     protected abstract void loadNameFragment();
 
 }
+
+

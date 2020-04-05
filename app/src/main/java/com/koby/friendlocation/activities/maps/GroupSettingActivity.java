@@ -19,12 +19,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.koby.friendlocation.R;
+import com.koby.friendlocation.activities.main.MainActivity;
 import com.koby.friendlocation.model.Contact;
 import com.koby.friendlocation.view.adapter.SettingContactsAdapter;
 import com.koby.friendlocation.model.Group;
@@ -34,20 +36,24 @@ import com.koby.friendlocation.repository.FirebaseRepository;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.android.support.DaggerAppCompatActivity;
 
 import static com.koby.friendlocation.constant.FirebaseConstants.GROUPS;
 import static com.koby.friendlocation.providers.CameraProvider.REQUEST_OK;
 import static com.koby.friendlocation.providers.CameraProvider.REQUSET_PHOTO_FROM_GALLERY;
 
 
-public class GroupSettingActivity extends AppCompatActivity {
+public class GroupSettingActivity extends DaggerAppCompatActivity {
 
     private static final String TAG = GroupSettingActivity.class.getSimpleName();
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    @Inject FirebaseRepository firebaseRepository;
+
     //Ui element
     @BindView(R.id.setting_group_toolbar)Toolbar toolbar;
     @BindView(R.id.settting_group_recyclerview) RecyclerView recyclerView;
@@ -60,22 +66,24 @@ public class GroupSettingActivity extends AppCompatActivity {
     private CameraProvider cameraProvider;
 
     Group group;
+    String groupUid,groupName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_setting);
 
-        group = (Group) getIntent().getSerializableExtra("group");
+        groupUid = getIntent().getStringExtra("groupUid");
+        groupName = getIntent().getStringExtra("groupName");
 
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(group.getGroupName());
+        Objects.requireNonNull(getSupportActionBar()).setTitle(groupName);
 
         setRecyclerView();
-        cameraProvider = new CameraProvider(GroupSettingActivity.this,imageView);
+        cameraProvider = new CameraProvider(GroupSettingActivity.this,imageView,firebaseRepository);
 
     }
 
@@ -85,7 +93,7 @@ public class GroupSettingActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == REQUEST_OK && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            cameraProvider.pickImage();
+            pickImage();
         } else {
             Toast.makeText(GroupSettingActivity.this, "please provide permission", Toast.LENGTH_SHORT).show();
         }
@@ -96,17 +104,36 @@ public class GroupSettingActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUSET_PHOTO_FROM_GALLERY && resultCode == RESULT_OK && data != null) {
             Uri uri = cameraProvider.getImageUri(data);
-            FirebaseRepository.getInstance().uploadGroupImage(uri,group.getGroupUid());
+            firebaseRepository.uploadGroupImage(uri,group.getGroupUid());
         }
+    }
+
+    @OnClick(R.id.setting_group_exit)
+    public void exitGroup(){
+        firebaseRepository.deleteGroup(group)
+                .addOnTaskCompleteListener(new FirebaseRepository.OnBatchCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        startActivity(new Intent(GroupSettingActivity.this, MainActivity.class));
+                        finish();
+                    }
+                });
+
     }
 
     @OnClick(R.id.setting_group_collapsing_toolbar)
     public void changGroupImage(){
         if (cameraProvider.checkPermission()) {
-            cameraProvider.pickImage();
+            pickImage();
         }else {
             cameraProvider.requestPermission();
         }
+    }
+
+    public void pickImage() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, REQUSET_PHOTO_FROM_GALLERY);
     }
 
     private void setRecyclerView() {
@@ -140,10 +167,6 @@ public class GroupSettingActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingActivity.this);
                 builder.setView(view);
                         builder.show();
-
-
-
-
             }
         });
     }
@@ -151,7 +174,7 @@ public class GroupSettingActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        final DocumentReference docRef = db.collection(GROUPS).document(group.getGroupUid());
+        final DocumentReference docRef = firebaseRepository.getGroupDocumentReference(groupUid);
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot snapshot,
@@ -165,10 +188,11 @@ public class GroupSettingActivity extends AppCompatActivity {
                     Log.d(TAG, "Current data: " + snapshot.getData());
 
                     group = snapshot.toObject(Group.class);
-
-                    if(group.getGroupImage()!=null) {
-                        Glide.with(GroupSettingActivity.this).load(Uri.parse(group.getGroupImage())).into(imageView);
-                    }
+                        Glide.with(GroupSettingActivity.this)
+                                .load(group.getGroupImage())
+                                .fallback(R.drawable.ic_group_grey)
+                                .centerCrop()
+                                .into(imageView);
 
                 } else {
                     Log.d(TAG, "Current data: null");

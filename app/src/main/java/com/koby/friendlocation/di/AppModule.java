@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.koby.friendlocation.providers.LocationProvider;
+import com.koby.friendlocation.repository.FirebaseRepository;
 
 import javax.annotation.Nullable;
 import javax.inject.Singleton;
@@ -31,6 +32,13 @@ public class AppModule {
     static FirebaseFirestore provideFirebaseFirestore(){
         return FirebaseFirestore.getInstance();
     }
+
+    @Singleton
+    @Provides
+    static FirebaseRepository provideFirebaseRepository(FirebaseFirestore db,FirebaseAuth mAuth){
+        return new FirebaseRepository(db,mAuth);
+    }
+
 
     @Singleton
     @Provides

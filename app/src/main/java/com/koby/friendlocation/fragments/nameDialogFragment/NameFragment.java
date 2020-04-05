@@ -54,7 +54,7 @@ public abstract class NameFragment extends BottomSheetDialogFragment {
         unbinder = ButterKnife.bind(this,view);
 
         mAuth = FirebaseAuth.getInstance();
-        firebaseRepository = FirebaseRepository.getInstance();
+//        firebaseRepository = FirebaseRepository.getInstance();
 
         setCurrentName();
 

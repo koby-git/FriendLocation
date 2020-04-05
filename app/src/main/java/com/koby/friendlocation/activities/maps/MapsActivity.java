@@ -56,9 +56,7 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
     private static final String TAG = MapsActivity.class.getSimpleName();
 
     //Dagger injection
-    @Inject
-    LocationProvider locationProvider;
-    @Inject FirebaseFirestore db;
+    @Inject LocationProvider locationProvider;
     @Inject @Nullable FirebaseUser firebaseUser;
     @Inject FirebaseRepository firebaseRepository;
 
@@ -127,7 +125,6 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
 
         mMap = googleMap;
 
-//        mMap.setMyLocationEnabled(true);
         locationProvider.getFusedLocationProviderClient()
                 .getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
@@ -161,7 +158,8 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
     public void groupSetting(){
         Intent intent = new Intent(MapsActivity.this, GroupSettingActivity.class);
         intent.putExtra("groupContacts",contacts);
-        intent.putExtra("group",group);
+        intent.putExtra("groupUid",group.getGroupUid());
+        intent.putExtra("groupName",group.getGroupName());
         startActivity(intent);
     }
 
@@ -213,7 +211,7 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(contactsAdapter);
 
-        //Choose contact to zoom in
+        //Zoom contact location
         contactsAdapter.setOnItemClickListener(contact -> {
             LatLng myLocation = new LatLng(contact.getLatitude(), contact.getLongitude());
             mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
@@ -226,6 +224,7 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         });
 
+        //Zoom contact image
         contactsAdapter.setImageClickListener(new ContactsAdapter.OnImageClickListener(){
             @Override
             public void onImageClick(String imageUri) {

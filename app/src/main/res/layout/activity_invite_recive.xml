@@ -6,27 +6,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.main.JoinGroupActivity">
+    tools:context=".activities.main.InviteReceiveActivity">
 
-    <com.goodiebag.pinview.Pinview
-        android:id="@+id/pinview"
-        app:pinBackground="@drawable/pin"
+   <ImageView
+       android:id="@+id/invite_receive_image"
+       android:layout_width="match_parent"
+       android:layout_height="200dp"
+       android:layout_margin="10dp"
+       android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/invite_receive_group_name"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        app:pinWidth="40dp"
-        app:pinHeight="40dp"
-        app:pinLength="6"
-        app:cursorVisible="true"
-        app:forceKeyboard="true"
-
-        app:inputType="text"
-        app:password="false"/>
+        android:layout_height="wrap_content"
+        android:text="שם הקבוצה"
+        android:textSize="26dp"
+        android:gravity="center"/>
 
     <Button
-        android:id="@+id/join_group_btn"
+        android:id="@+id/invite_receive_join_button"
         android:layout_margin="20dp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="join"/>
+        android:text="@string/join"
+        android:layout_gravity="center"
+        android:enabled="false"/>
 
 </LinearLayout>

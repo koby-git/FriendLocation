@@ -106,7 +106,7 @@ public class MainActivity extends DaggerAppCompatActivity {
     //Create group fab
     @OnClick(R.id.main_fab_create)
     public void crateGroup() {
-        startActivity(new Intent(MainActivity.this, AddGroupActivity.class));
+        startActivity(new Intent(MainActivity.this, CreateGroupActivity.class));
     }
 
     //set FirestoreUI recycler view
@@ -183,4 +183,15 @@ public class MainActivity extends DaggerAppCompatActivity {
         mAdapter.stopListening();
     }
 
+//    firebaseRepository.addGroupUser(group)
+//            .addOnTaskCompleteListener(
+//                        (FirebaseRepository.OnBatchCompleteListener) task -> {
+//        if (task.isSuccessful()) {
+//            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+//            finish();
+//        } else {
+//            Log.i(TAG, task.getException().toString());
+//            Toast.makeText(InviteReceiveActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+//        }
+//    }));
 }

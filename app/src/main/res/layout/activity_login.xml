@@ -24,46 +24,40 @@
         android:padding="40dp"
         android:gravity="center"
         android:orientation="vertical"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="מייל"
-            android:layout_margin="0dp"
-            android:background="@color/colorWhite">
-
-            <EditText
+            android:hint="@string/password">
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:inputType="textEmailAddress"
                 android:singleLine="true"
+                android:hint="@string/email"
+                android:background="@color/colorWhite"
                 android:textColor="@color/colorBlack" />
-        </com.google.android.material.textfield.TextInputLayout>
 
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="סיסמא"
-            android:layout_margin="0dp"
-            android:background="@color/colorWhite">
+            android:hint="@string/password">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:inputType="textPassword"
                 android:singleLine="true"
-                android:textColor="@color/colorBlack" />
+                android:textColor="@color/colorBlack"
+                android:background="@color/colorWhite"/>
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -81,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="שכתה סיסמא?" />
-        >
+
 
         <TextView
             android:id="@+id/login_regiter"

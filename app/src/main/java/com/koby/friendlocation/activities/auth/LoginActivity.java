@@ -28,17 +28,14 @@ import dagger.android.support.DaggerAppCompatActivity;
 
 public class LoginActivity extends DaggerAppCompatActivity {
 
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = LoginActivity.class.getSimpleName();
 
-    @Inject
-    FirebaseAuth mAuth;
+    @Inject FirebaseAuth mAuth;
 
     @BindView(R.id.login_progress_bar)
     ProgressBar progressBar;
-
     @BindView(R.id.login_email)
     EditText emailTv;
-
     @BindView(R.id.login_password)
     EditText passwordTv;
 
@@ -89,8 +86,8 @@ public class LoginActivity extends DaggerAppCompatActivity {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 progressBar.setVisibility(View.GONE);
-                                Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                Log.w(TAG, getString(R.string.authentacaion_failed), task.getException());
+                                Toast.makeText(LoginActivity.this, getString(R.string.authentacaion_failed),
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
