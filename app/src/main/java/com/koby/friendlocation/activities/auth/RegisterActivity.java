@@ -17,6 +17,7 @@ public class RegisterActivity extends DaggerAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        getSupportActionBar().setTitle(R.string.register);
         RegisterFragment registerFragment = new RegisterFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment, registerFragment);

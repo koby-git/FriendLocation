@@ -16,7 +16,7 @@ public class CreateGroupActivity extends DaggerAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_group);
 
-        getSupportActionBar().setTitle("קבוצה חדשה");
+        getSupportActionBar().setTitle(getString(R.string.new_group));
         if (savedInstanceState == null) {
             Fragment groupProfileFragment = new GroupProfileFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.group_profile_container, groupProfileFragment).commit();

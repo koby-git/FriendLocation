@@ -1,5 +1,6 @@
 package com.koby.friendlocation.di.main;
 
+import com.koby.friendlocation.fragments.nameDialogFragment.UserNameFragment;
 import com.koby.friendlocation.fragments.profile.UserProfileFragment;
 import com.koby.friendlocation.fragments.settings.SettingsFragment;
 
@@ -14,4 +15,7 @@ public abstract class SettingsFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract UserProfileFragment contributeUserProfileFragment();
+
+    @ContributesAndroidInjector
+    abstract UserNameFragment contributeUserNameFragment();
 }

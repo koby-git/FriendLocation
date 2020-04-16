@@ -24,16 +24,16 @@ public class FirestoreUiGroupAdapter extends FirestoreRecyclerAdapter<Group, Fir
 
     Context context;
 
-    GroupAdapter.onItemClickListener itemClickListener;
-    GroupAdapter.onImageClickListener imageClickListener;
+    OnItemClickListener itemClickListener;
+    OnImageClickListener imageClickListener;
 
-    public interface onImageClickListener{ void onImageClick(String imageUri);}
-    public interface onItemClickListener{ void onItemClick(Group group);}
+    public interface OnImageClickListener{ void onImageClick(String imageUri);}
+    public interface OnItemClickListener{ void onItemClick(Group group);}
 
-    public void setImageClickListener(GroupAdapter.onImageClickListener imageClickListener){
+    public void setImageClickListener(OnImageClickListener imageClickListener){
         this.imageClickListener = imageClickListener;
     }
-    public void setOnItemClickListener(GroupAdapter.onItemClickListener itemClickListener){
+    public void setOnItemClickListener(OnItemClickListener itemClickListener){
         this.itemClickListener = itemClickListener;
     }
 

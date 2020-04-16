@@ -6,9 +6,9 @@
     android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/fragment_name_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="הקלד את שמך"
         android:padding="10dp"
         android:layout_marginRight="20dp"
         android:textSize="16dp"/>
@@ -27,13 +27,13 @@
             android:id="@+id/fragment_name_confirm_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="אישור"
+            android:text="@string/ok"
             android:layout_margin="5dp"/>
         <Button
             android:id="@+id/fragment_name_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ביטול"
+            android:text="@string/cancel"
             android:layout_margin="5dp"/>
 
     </LinearLayout>

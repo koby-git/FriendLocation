@@ -5,7 +5,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.koby.friendlocation.fragments.nameDialogFragment.UserNameFragment;
-import com.koby.friendlocation.repository.FirebaseRepository;
 
 public class UserProfileFragment extends BaseProfileFragment {
 
@@ -28,7 +27,10 @@ public class UserProfileFragment extends BaseProfileFragment {
     //Upload chosen image
     @Override
     protected void uploadImage(Uri uri) {
-        Glide.with(getContext()).load(uri).centerCrop().into(imageView);
+        Glide.with(getContext())
+                .load(uri)
+                .centerCrop()
+                .into(imageView);
         firebaseRepository.uploadUserImage(uri);
     }
 
@@ -39,8 +41,6 @@ public class UserProfileFragment extends BaseProfileFragment {
         setViewModelName(username);
         loadImage();
     }
-
-
 }
 
 

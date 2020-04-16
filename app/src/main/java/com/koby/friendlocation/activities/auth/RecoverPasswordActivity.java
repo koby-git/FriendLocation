@@ -37,6 +37,7 @@ public class RecoverPasswordActivity extends DaggerAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recover_password);
         ButterKnife.bind(this);
+        getActionBar().setTitle(R.string.recover_password);
     }
 
     //send password rest email

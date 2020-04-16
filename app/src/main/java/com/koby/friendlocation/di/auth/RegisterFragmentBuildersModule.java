@@ -1,5 +1,6 @@
 package com.koby.friendlocation.di.auth;
 
+import com.koby.friendlocation.fragments.nameDialogFragment.UserNameFragment;
 import com.koby.friendlocation.fragments.profile.RegisterFragment;
 import com.koby.friendlocation.fragments.profile.RegisterProfileFragment;
 
@@ -14,4 +15,8 @@ public abstract class RegisterFragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract RegisterProfileFragment contributeRegisterProfileFragment();
+
+    @ContributesAndroidInjector
+    abstract UserNameFragment contributeUserNameFragment();
+
 }

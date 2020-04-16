@@ -108,6 +108,15 @@
     <string name="exit_group">יציאה מהקבוצה</string>
     <string name="join">הצטרפ/י</string>
     <string name="Add_member">הוסף משתמש</string>
+    <string name="enter_name">הקלד את שמך</string>
+    <string name="ok">אישור</string>
+    <string name="cancel">ביטול</string>
+    <string name="name">שם</string>
+    <string name="register">הרשמה</string>
+    <string name="recover_password">שחזור סיסמה</string>
+    <string name="settings">הגדרות</string>
+    <string name="new_group">קבוצה חדשה</string>
+    <string name="enter_group_name">הקלד את שם הקבוצה</string>
 
 
     <plurals name="num_locations_reported">

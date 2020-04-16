@@ -9,15 +9,6 @@
     android:orientation="vertical"
     android:padding="40dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_in"
-        android:layout_gravity="center"
-        android:textSize="50dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-
-
     <EditText
         android:id="@+id/register_email"
         android:layout_width="match_parent"

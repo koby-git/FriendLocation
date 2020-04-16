@@ -121,21 +121,6 @@ public class RegisterFragment extends DaggerFragment {
 
         //Set user in database
         firebaseRepository.setUserProfileName(guest);
-
-        //Update name in FirebaseAuth
-        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
-                .setDisplayName(guest).build();
-
-        mAuth.getCurrentUser().updateProfile(profileChangeRequest)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "User profile updated.");
-                            usernameViewModel.setName(guest);
-                        }
-                    }
-                });
         usernameViewModel.setName(guest);
     }
 }

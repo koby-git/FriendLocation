@@ -49,23 +49,6 @@ public class LoginActivity extends DaggerAppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    //Check if user input is valid
-    private boolean inputValidation() {
-
-        email = emailTv.getText().toString();
-        password = passwordTv.getText().toString().trim();
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches() || email.equals("")) {
-            emailTv.setError("כתובת האימייל אינה תקינה");
-            return false;
-        } else if (TextUtils.isEmpty(password)) {
-            passwordTv.setError("סיסמא לא נכונה");
-            return false;
-        }
-
-        return true;
-    }
-
     //Login button
     @OnClick(R.id.login_button)
     public void login() {
@@ -106,5 +89,24 @@ public class LoginActivity extends DaggerAppCompatActivity {
     public void register() {
         startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
     }
+
+    //Check if user input is valid
+    private boolean inputValidation() {
+
+        email = emailTv.getText().toString();
+        password = passwordTv.getText().toString().trim();
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches() || email.equals("")) {
+            emailTv.setError("כתובת האימייל אינה תקינה");
+            return false;
+        } else if (TextUtils.isEmpty(password)) {
+            passwordTv.setError("סיסמא לא נכונה");
+            return false;
+        }
+
+        return true;
+    }
+
+
 
 }

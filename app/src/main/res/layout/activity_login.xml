@@ -29,36 +29,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+            android:id="@+id/login_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/login_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:singleLine="true"
-                android:hint="@string/email"
-                android:background="@color/colorWhite"
-                android:textColor="@color/colorBlack" />
+            android:hint="@string/email"
+            android:layout_marginTop="15dp"
+            android:drawablePadding="8dp"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"
+            android:textColor="@color/colorBlack"
+            android:drawableRight="@drawable/ic_mail_outline"/>
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+            android:id="@+id/login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/login_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:singleLine="true"
-                android:textColor="@color/colorBlack"
-                android:background="@color/colorWhite"/>
-        </com.google.android.material.textfield.TextInputLayout>
+            android:hint="@string/password"
+            android:drawablePadding="8dp"
+            android:drawableRight="@drawable/ic_lock_outline"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:textColor="@color/colorBlack" />
 
 
         <Button

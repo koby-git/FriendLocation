@@ -13,13 +13,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.koby.friendlocation.R;
+import com.koby.friendlocation.activities.main.MainActivity;
+import com.koby.friendlocation.activities.main.SettingsActivity;
 import com.koby.friendlocation.providers.CameraProvider;
 import com.koby.friendlocation.repository.FirebaseRepository;
 import com.koby.friendlocation.viewmodel.NameViewModel;
@@ -56,6 +57,7 @@ public abstract class BaseProfileFragment extends DaggerFragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
         usernameViewModel = ViewModelProviders.of(requireActivity()).get(NameViewModel.class); }
 
     @Override
@@ -68,19 +70,12 @@ public abstract class BaseProfileFragment extends DaggerFragment{
 
         unbinder = ButterKnife.bind(this,view);
 
-        //Init user
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
         //Init camera provider
         cameraProvider = new CameraProvider(getActivity(),imageView,firebaseRepository);
 
         //Observe username changes
-        usernameViewModel.getName().observe(requireActivity(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                username.setText(s);
-            }
-        });
+        usernameViewModel.getName()
+                .observe(requireActivity(), s -> username.setText(s));
     }
 
     public void pickImage() {

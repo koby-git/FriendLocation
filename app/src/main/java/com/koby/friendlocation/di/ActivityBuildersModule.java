@@ -14,6 +14,7 @@ import com.koby.friendlocation.di.auth.InviteReceiveActivityModule;
 import com.koby.friendlocation.di.auth.RegisterFragmentBuildersModule;
 import com.koby.friendlocation.di.main.CreateGroupActivityBuildersModule;
 import com.koby.friendlocation.di.main.SettingsFragmentBuildersModule;
+import com.koby.friendlocation.fragments.nameDialogFragment.NameFragment;
 import com.koby.friendlocation.fragments.profile.BaseProfileFragment;
 
 import dagger.Module;
@@ -55,7 +56,12 @@ public abstract class ActivityBuildersModule {
     @ContributesAndroidInjector
     abstract GroupSettingActivity contributeGroupSettingActivity();
 
+
     @ContributesAndroidInjector
     abstract BaseProfileFragment contributeBaseProfileFragment();
+
+    @ContributesAndroidInjector
+    abstract NameFragment contributeNameFragment();
+
 
 }

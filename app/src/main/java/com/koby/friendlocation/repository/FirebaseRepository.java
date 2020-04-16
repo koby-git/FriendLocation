@@ -1,9 +1,11 @@
 package com.koby.friendlocation.repository;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.firebase.ui.firestore.SnapshotParser;
@@ -12,6 +14,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +35,7 @@ import com.koby.friendlocation.model.Group;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -48,11 +53,6 @@ public class FirebaseRepository {
     FirebaseUser firebaseUser;
     FirebaseFirestore db;
     WriteBatch batch;
-
-//    private static final FirebaseRepository ourInstance = new FirebaseRepository();
-//    public static FirebaseRepository getInstance() {
-//        return ourInstance;
-//    }
 
     //Constructor
     @Inject
@@ -220,11 +220,30 @@ public class FirebaseRepository {
         db.collection(GROUPS).document(firebaseUser.getUid()).set(imageMap, SetOptions.merge());
     }
 
-    public void setUserProfileName(String userProfileName){
+    public TaskResult setUserProfileName(String userProfileName){
         Map<String,String> map = new HashMap();
         map.put("name",userProfileName);
         db.collection(USERS).document(mAuth.getUid()).set(map,SetOptions.merge());
+
+        //Update name in firebaseAuth
+        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+                .setDisplayName(userProfileName).build();
+
+        firebaseUser.updateProfile(profileChangeRequest)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User profile updated.");
+                            batchCompleteListener.onComplete(task);
+                        }
+                    }
+                });
+
+        return new TaskResult();
+
     }
+
     public void setUserProfileImage(Uri contentUri){
         //Update user db
         Map<String,String> imageMap = new HashMap<>();
@@ -233,7 +252,7 @@ public class FirebaseRepository {
     }
 
     //Upload profile image
-    public void uploadUserImage(Uri contentUri) {
+    public TaskResult uploadUserImage(Uri contentUri) {
 
         final StorageReference ref = FirebaseStorage.getInstance().getReference().child(USERS + "/" +firebaseUser.getUid()+".jpg");
         UploadTask uploadTask = ref.putFile(contentUri);
@@ -261,6 +280,7 @@ public class FirebaseRepository {
                 }
             }
         });
+        return new TaskResult();
     }
     public void uploadGroupImage(Uri contentUri,String groupUid){
 
@@ -296,22 +316,19 @@ public class FirebaseRepository {
 
         db.collection(GROUPS).document(groupUid).set(map,SetOptions.merge());
     }
-    private void updateUserProfileImage(Uri userImage){
-        Map<String, String> map = new HashMap();
-        map.put("imageUri", userImage.toString());
 
-        db.collection(USERS).document(firebaseUser.getUid()).set(map,SetOptions.merge());
+    private void updateUserProfileImage(Uri userImage){
+        Map<String, String> imageMap = new HashMap();
+        imageMap.put("imageUri", userImage.toString());
+
+        db.collection(USERS).document(firebaseUser.getUid()).set(imageMap,SetOptions.merge());
 
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(userImage)
                 .build();
 
-        firebaseUser.updateProfile(profileUpdates)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "User profile updated.");
-                    }
-                });
+        firebaseUser.updateProfile(profileUpdates);
+
     }
 
     public DocumentReference getGroupDocumentReference(String groupUid) {

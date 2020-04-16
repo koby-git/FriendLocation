@@ -22,7 +22,6 @@ import com.koby.friendlocation.activities.maps.MapsActivity;
 import com.koby.friendlocation.view.adapter.FirestoreUiGroupAdapter;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.model.Group;
-import com.koby.friendlocation.view.adapter.GroupAdapter;
 
 import com.koby.friendlocation.providers.LocationProvider;
 import com.koby.friendlocation.repository.FirebaseRepository;
@@ -118,7 +117,7 @@ public class MainActivity extends DaggerAppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
         //Choose group
-        mAdapter.setOnItemClickListener(new GroupAdapter.onItemClickListener() {
+        mAdapter.setOnItemClickListener(new FirestoreUiGroupAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(Group group) {
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
@@ -128,7 +127,7 @@ public class MainActivity extends DaggerAppCompatActivity {
         });
 
         //Zoom group image
-        mAdapter.setImageClickListener(new GroupAdapter.onImageClickListener() {
+        mAdapter.setImageClickListener(new FirestoreUiGroupAdapter.OnImageClickListener(){
             @Override
             public void onImageClick(String imageUri) {
                 LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
@@ -182,16 +181,4 @@ public class MainActivity extends DaggerAppCompatActivity {
         super.onStop();
         mAdapter.stopListening();
     }
-
-//    firebaseRepository.addGroupUser(group)
-//            .addOnTaskCompleteListener(
-//                        (FirebaseRepository.OnBatchCompleteListener) task -> {
-//        if (task.isSuccessful()) {
-//            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-//            finish();
-//        } else {
-//            Log.i(TAG, task.getException().toString());
-//            Toast.makeText(InviteReceiveActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
-//        }
-//    }));
 }

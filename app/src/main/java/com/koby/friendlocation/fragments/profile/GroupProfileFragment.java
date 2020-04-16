@@ -48,10 +48,10 @@ public class GroupProfileFragment extends BaseProfileFragment {
         }
 
         firebaseRepository
-                .setGroup(groupName, imagePathUri).addOnTaskCompleteListener(new FirebaseRepository.OnBatchCompleteListener() {
+                .setGroup(groupName, imagePathUri)
+                .addOnTaskCompleteListener(new FirebaseRepository.OnBatchCompleteListener() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-
                 if (task.isSuccessful()) {
                     startActivity(new Intent(getActivity(), MainActivity.class));
                     getActivity().finish();
