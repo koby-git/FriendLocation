@@ -65,6 +65,7 @@ public class LocationProvider {
         try {
             Log.i(TAG, "Starting location updates");
             Utils.setRequestingLocationUpdates(mContext, true);
+
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, getPendingIntent());
         } catch (SecurityException e) {
             Utils.setRequestingLocationUpdates(mContext, false);

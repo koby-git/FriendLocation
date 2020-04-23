@@ -1,11 +1,9 @@
 package com.koby.friendlocation.repository;
 
-import android.app.Activity;
 import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.firebase.ui.firestore.SnapshotParser;
@@ -14,8 +12,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,7 +31,6 @@ import com.koby.friendlocation.model.Group;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -76,12 +71,12 @@ public class FirebaseRepository {
     public TaskResult addGroupUser(Group group) {
 
         //Write in groups collection
-        DocumentReference usersUid = db.collection(GROUPS).document(group.getGroupUid());
+        DocumentReference usersUid = db.collection(GROUPS).document(group.getUid());
         batch.update(usersUid, "users", FieldValue.arrayUnion(firebaseUser.getUid()));
 
         //Write in users collection
         DocumentReference groupsUid = db.collection(USERS).document(firebaseUser.getUid());
-        batch.update(groupsUid, "groupsUid", FieldValue.arrayUnion(group.getGroupUid()));
+        batch.update(groupsUid, "groupsUid", FieldValue.arrayUnion(group.getUid()));
 
         DocumentReference groups = db.collection(USERS).document(firebaseUser.getUid());
         batch.update(groups, "groups", FieldValue.arrayUnion(group));
@@ -143,12 +138,12 @@ public class FirebaseRepository {
         batch = FirebaseFirestore.getInstance().batch();
 
         //Write in groups collection
-        DocumentReference usersUidDR = FirebaseFirestore.getInstance().collection(GROUPS).document(group.getGroupUid());
+        DocumentReference usersUidDR = FirebaseFirestore.getInstance().collection(GROUPS).document(group.getUid());
         batch.update(usersUidDR, "users", FieldValue.arrayRemove(firebaseUser.getUid()));
 
         //Write in users collection
         DocumentReference groupsUidDR = FirebaseFirestore.getInstance().collection(USERS).document(firebaseUser.getUid());
-        batch.update(groupsUidDR, "groupsUid", FieldValue.arrayRemove(group.getGroupUid()));
+        batch.update(groupsUidDR, "groupsUid", FieldValue.arrayRemove(group.getUid()));
 
         DocumentReference groups = FirebaseFirestore.getInstance().collection(USERS).document(firebaseUser.getUid());
         batch.update(groups, "groups", FieldValue.arrayUnion(group));
@@ -173,51 +168,37 @@ public class FirebaseRepository {
         FirebaseFirestore.getInstance().collection(GROUPS).add(group)
                 .addOnSuccessListener(documentReference -> {
 
-                    group.setGroupUid(documentReference.getId());
-                    group.setGroupName(groupName);
-                    group.setGroupInviteCode(documentReference.getId());
+                    group.setUid(documentReference.getId());
+                    group.setName(groupName);
+                    group.setInviteCode(documentReference.getId());
                     if (imageUri!=null){
-                        group.setGroupImage(imageUri.toString());
+                        group.setImage(imageUri.toString());
                     }
 
                     //Write in groups collection
-                    DocumentReference userNamesDR = FirebaseFirestore.getInstance().collection(GROUPS).document(group.getGroupUid());
+                    DocumentReference userNamesDR = FirebaseFirestore.getInstance().collection(GROUPS).document(group.getUid());
                     batch.update(userNamesDR, "userNames", FieldValue.arrayUnion(firebaseUser.getDisplayName()));
 
                     DocumentReference groupDetailsDR = db.collection(GROUPS).document(documentReference.getId());
                     batch.set(groupDetailsDR,group,SetOptions.merge());
 
-                    DocumentReference usersUidDR = FirebaseFirestore.getInstance().collection(GROUPS).document(group.getGroupUid());
+                    DocumentReference usersUidDR = FirebaseFirestore.getInstance().collection(GROUPS).document(group.getUid());
                     batch.update(usersUidDR, "users", FieldValue.arrayUnion(firebaseUser.getUid()));
 
                     //Write in users collection
                     DocumentReference groupsUidDR = FirebaseFirestore.getInstance().collection(USERS).document(firebaseUser.getUid());
-                    batch.update(groupsUidDR, "groupsUid", FieldValue.arrayUnion(group.getGroupUid()));
+                    batch.update(groupsUidDR, "groupsUid", FieldValue.arrayUnion(group.getUid()));
 
                     DocumentReference groups = FirebaseFirestore.getInstance().collection(USERS).document(firebaseUser.getUid());
                     batch.update(groups, "groups", FieldValue.arrayUnion(group));
 
-                    batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                batchCompleteListener.onComplete(task);
-                            }
+                    batch.commit().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            batchCompleteListener.onComplete(task);
                         }
                     });
                 });
         return new TaskResult();
-    }
-
-    public void setGroupProfileName(String groupProfileName) {
-
-    }
-    public void setGroupProfileImage(Uri imagePathUri,String groupUid){
-
-//        Uri databaseImageUriRef = uploadUserImage(imagePathUri);
-        Map<String,String> imageMap = new HashMap<>();
-//        imageMap.put("imageUri",contentUri.toString());
-        db.collection(GROUPS).document(firebaseUser.getUid()).set(imageMap, SetOptions.merge());
     }
 
     public TaskResult setUserProfileName(String userProfileName){

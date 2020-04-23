@@ -20,6 +20,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -53,6 +56,8 @@ public class GroupSettingActivity extends DaggerAppCompatActivity {
     private static final String TAG = GroupSettingActivity.class.getSimpleName();
 
     @Inject FirebaseRepository firebaseRepository;
+    @Inject @Nullable
+    FirebaseUser firebaseUser;
 
     //Ui element
     @BindView(R.id.setting_group_toolbar)Toolbar toolbar;
@@ -104,8 +109,34 @@ public class GroupSettingActivity extends DaggerAppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUSET_PHOTO_FROM_GALLERY && resultCode == RESULT_OK && data != null) {
             Uri uri = cameraProvider.getImageUri(data);
-            firebaseRepository.uploadGroupImage(uri,group.getGroupUid());
+            firebaseRepository.uploadGroupImage(uri,group.getUid());
         }
+    }
+
+    @OnClick(R.id.group_setting_add_new_member)
+    public void addNewMember(){
+        String link = "https://www.example.com/?groupUid=" + group.getInviteCode();
+
+        FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse(link))
+                .setDomainUriPrefix("https://firendlocation.page.link")
+                .setAndroidParameters(
+                        new DynamicLink.AndroidParameters.Builder()
+                                .build())
+                .buildShortDynamicLink()
+                .addOnSuccessListener(shortDynamicLink -> {
+
+                    String invitationLink = shortDynamicLink.getShortLink().toString();
+
+                    String message = firebaseUser.getDisplayName() + " wants to invite you to Friends location!" +
+                            "Let's join Friends location! Here is my group invite code - " + group.getInviteCode() + " Use my referrer link: "
+                            + invitationLink;
+                    Intent share = new Intent(Intent.ACTION_SEND);
+                    share.setType("text/plain");
+                    share.putExtra(Intent.EXTRA_TEXT, message);
+
+                    startActivity(Intent.createChooser(share, "Share friend location app"));
+                }).addOnFailureListener(e -> e.printStackTrace());
     }
 
     @OnClick(R.id.setting_group_exit)
@@ -189,7 +220,7 @@ public class GroupSettingActivity extends DaggerAppCompatActivity {
 
                     group = snapshot.toObject(Group.class);
                         Glide.with(GroupSettingActivity.this)
-                                .load(group.getGroupImage())
+                                .load(group.getImage())
                                 .fallback(R.drawable.ic_group_grey)
                                 .centerCrop()
                                 .into(imageView);

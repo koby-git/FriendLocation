@@ -71,9 +71,9 @@ public class InviteReceiveActivity extends DaggerAppCompatActivity {
                                     if (task.isSuccessful()){
                                         join.setEnabled(true);
                                         group = task.getResult().toObject(Group.class);
-                                        groupName.setText(group.getGroupName());
+                                        groupName.setText(group.getName());
                                         Glide.with(InviteReceiveActivity.this)
-                                                .load(group.getGroupImage())
+                                                .load(group.getImage())
                                                 .centerCrop()
                                                 .fallback(R.drawable.ic_group_grey)
                                                 .into(groupImageView);

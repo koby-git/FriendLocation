@@ -5,67 +5,55 @@ import java.util.ArrayList;
 
 public class Group implements Serializable {
 
-    private String groupName;
-    private String groupInviteCode;
-    private String groupUid;
-    private String groupImage;
-    private ArrayList<String> users;
+    private String name;
+    private String inviteCode;
+    private String uid;
+    private String image;
 
     public Group() {
     }
 
-
-
     public Group(String groupName,String groupUid, String groupInviteCode ) {
-        this.groupName = groupName;
-        this.groupInviteCode = groupInviteCode;
-        this.groupUid = groupUid;
-        users = new ArrayList<>();
+        this.name = groupName;
+        this.inviteCode = groupInviteCode;
+        this.uid = groupUid;
     }
 
     public Group(String groupName, String groupInviteCode) {
-        this.groupName = groupName;
-        this.groupInviteCode = groupInviteCode;
-        users = new ArrayList<>();
+        this.name = groupName;
+        this.inviteCode = groupInviteCode;
     }
 
-    public String getGroupImage() {
-        return groupImage;
+
+    public String getName() {
+        return name;
     }
 
-    public void setGroupImage(String groupImage) {
-        this.groupImage = groupImage;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void addUser(String user) {
-        this.users.add(user);
+    public String getInviteCode() {
+        return inviteCode;
     }
 
-    public ArrayList<String> getUsers() {
-        return users;
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public String getUid() {
+        return uid;
     }
 
-    public void setGroupInviteCode(String groupInviteCode) {
-        this.groupInviteCode = groupInviteCode;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public void setGroupUid(String groupUid) {
-        this.groupUid = groupUid;
+    public String getImage() {
+        return image;
     }
 
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public String getGroupInviteCode() {
-        return groupInviteCode;
-    }
-
-    public String getGroupUid() {
-        return groupUid;
+    public void setImage(String image) {
+        this.image = image;
     }
 }

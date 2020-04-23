@@ -119,6 +119,7 @@ public  class Utils {
 
         // Dismiss notification once the user touches it.
         builder.setAutoCancel(true);
+        builder.setTimeoutAfter(3000);
 
         // Get an instance of the Notification manager
         NotificationManager mNotificationManager =

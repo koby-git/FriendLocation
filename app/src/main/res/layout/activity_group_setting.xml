@@ -73,7 +73,7 @@
             <com.google.android.material.button.MaterialButton
                 android:layout_gravity="bottom"
                 android:layout_weight="0"
-                android:id="@+id/maps_add_new_member"
+                android:id="@+id/group_setting_add_new_member"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"

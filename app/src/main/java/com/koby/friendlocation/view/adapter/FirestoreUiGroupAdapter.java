@@ -54,17 +54,15 @@ public class FirestoreUiGroupAdapter extends FirestoreRecyclerAdapter<Group, Fir
 
     @Override
     protected void onBindViewHolder(@NonNull GroupHolder holder, int position, @NonNull Group model) {
-        holder.groupName.setText(model.getGroupName());
-        if(model.getGroupImage()!=null){
+        System.out.println("aaaaaaaaaaaaaaaaaaaa");
+        holder.groupName.setText(model.getName());
+        if(model.getImage()!=null){
             Glide.with(context)
-                    .load(Uri.parse(model.getGroupImage()))
+                    .load(Uri.parse(model.getImage()))
                     .circleCrop()
-
                     .into(holder.groupImageView);
         }
     }
-
-
 
     public class GroupHolder extends RecyclerView.ViewHolder{
 
@@ -75,26 +73,20 @@ public class FirestoreUiGroupAdapter extends FirestoreRecyclerAdapter<Group, Fir
             super(itemView);
 
             ButterKnife.bind(this,itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && itemClickListener != null) {
-                        itemClickListener.onItemClick(getSnapshots().get(position));
-                    }
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && itemClickListener != null) {
+                    itemClickListener.onItemClick(getSnapshots().get(position));
                 }
             });
 
-            groupImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && imageClickListener != null) {
-                        imageClickListener.onImageClick(getSnapshots().get(position).getGroupImage());
-                    }
+            groupImageView.setOnClickListener(view -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && imageClickListener != null) {
+                    imageClickListener.onImageClick(getSnapshots().get(position).getImage());
                 }
             });
         }
-
     }
+
 }

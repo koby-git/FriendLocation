@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="Setting"
-        android:id="@+id/action_setting"/>
+        android:title="edit"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_edit_black"
+        android:id="@+id/action_edit"/>
 </menu>

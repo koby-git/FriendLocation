@@ -21,6 +21,6 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
         android:layout_alignParentLeft="true"
-        android:text="Create group"/>
+        android:text="@string/new_group"/>
 
 </RelativeLayout>

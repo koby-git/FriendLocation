@@ -117,33 +117,27 @@ public class MainActivity extends DaggerAppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
         //Choose group
-        mAdapter.setOnItemClickListener(new FirestoreUiGroupAdapter.OnItemClickListener(){
-            @Override
-            public void onItemClick(Group group) {
-                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                intent.putExtra("group", group);
-                startActivity(intent);
-            }
+        mAdapter.setOnItemClickListener(group -> {
+            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+            intent.putExtra("group", group);
+            startActivity(intent);
         });
 
         //Zoom group image
-        mAdapter.setImageClickListener(new FirestoreUiGroupAdapter.OnImageClickListener(){
-            @Override
-            public void onImageClick(String imageUri) {
-                LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
-                View view =inflater.inflate(R.layout.dialog_image, null);
-                ImageView imageView = view.findViewById(R.id.dialog_image);
-                Glide.with(MainActivity.this)
-                        .load(imageUri)
-                        .placeholder(R.drawable.ic_delete_forever)
-                        .fallback(R.drawable.ic_group_grey)
-                        .centerCrop()
-                        .into(imageView);
+        mAdapter.setImageClickListener(imageUri -> {
+            LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+            View view =inflater.inflate(R.layout.dialog_image, null);
+            ImageView imageView = view.findViewById(R.id.dialog_image);
+            Glide.with(MainActivity.this)
+                    .load(imageUri)
+                    .placeholder(R.drawable.ic_delete_forever)
+                    .fallback(R.drawable.ic_group_grey)
+                    .centerCrop()
+                    .into(imageView);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setView(view);
-                builder.show();
-            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setView(view);
+            builder.show();
         });
     }
 

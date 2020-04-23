@@ -55,6 +55,7 @@ public class LocationUpdatesBroadcastReceiver extends BroadcastReceiver {
                 LocationResult result = LocationResult.extractResult(intent);
                 if (result != null) {
                     List<Location> locations = result.getLocations();
+                    Utils.sendNotification(context,"מעדכן מיקום..");
                     Utils.setLocationUpdatesResult(context, locations);
                     Log.i(TAG, Utils.getLocationUpdatesResult(context));
                 }

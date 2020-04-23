@@ -6,13 +6,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,6 +37,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.koby.friendlocation.activities.main.SettingsActivity;
 import com.koby.friendlocation.view.adapter.ContactsAdapter;
 import com.koby.friendlocation.providers.LocationProvider;
 import com.koby.friendlocation.repository.FirebaseRepository;
@@ -53,8 +58,6 @@ import dagger.android.support.DaggerAppCompatActivity;
 
 public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyCallback {
 
-    private static final String TAG = MapsActivity.class.getSimpleName();
-
     //Dagger injection
     @Inject LocationProvider locationProvider;
     @Inject @Nullable FirebaseUser firebaseUser;
@@ -62,6 +65,8 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
 
     //Ui element
     @BindView(R.id.maps_toolbar) Toolbar toolbar;
+    @BindView(R.id.maps_toolbar_imageview) ImageView toolbarGroupImage;
+    @BindView(R.id.maps_toolbar_textview) TextView toolbarGroupName;
     @BindView(R.id.maps_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.maps_bottom_sheet) View bottomSheet;
 
@@ -84,7 +89,12 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
 
         //Set toolbar
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(group.getGroupName());
+        getSupportActionBar().setTitle(null);
+        toolbarGroupName.setText(group.getName());
+        Glide.with(this)
+                .load(group.getImage())
+                .circleCrop()
+                .into(toolbarGroupImage);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -111,7 +121,7 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
     protected void onStart() {
         super.onStart();
 
-        registration = firebaseRepository.getUsersQuery(group.getGroupUid())
+        registration = firebaseRepository.getUsersQuery(group.getUid())
                 .addSnapshotListener((queryDocumentSnapshots, ex) -> {
 
                     //Update ui when receive new location from group members
@@ -158,15 +168,15 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
     public void groupSetting(){
         Intent intent = new Intent(MapsActivity.this, GroupSettingActivity.class);
         intent.putExtra("groupContacts",contacts);
-        intent.putExtra("groupUid",group.getGroupUid());
-        intent.putExtra("groupName",group.getGroupName());
+        intent.putExtra("groupUid",group.getUid());
+        intent.putExtra("groupName",group.getName());
         startActivity(intent);
     }
 
-    //Send invite to the wanted contact
+     //Send invite to the wanted contact
     @OnClick(R.id.maps_add_new_member)
     public void sendInvite() {
-        String link = "https://www.example.com/?groupUid=" + group.getGroupInviteCode();
+        String link = "https://www.example.com/?groupUid=" + group.getInviteCode();
 
         FirebaseDynamicLinks.getInstance().createDynamicLink()
                 .setLink(Uri.parse(link))
@@ -175,32 +185,19 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
                         new DynamicLink.AndroidParameters.Builder()
                                 .build())
                 .buildShortDynamicLink()
-                .addOnSuccessListener(new OnSuccessListener<ShortDynamicLink>() {
-                    @Override
-                    public void onSuccess(ShortDynamicLink shortDynamicLink) {
-                        sendDynamicLink(shortDynamicLink.getShortLink());
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
+                .addOnSuccessListener(shortDynamicLink -> {
 
-    //Send dynamicLink to the wanted contact
-    private void sendDynamicLink(Uri shortLink) {
+                    String invitationLink = shortDynamicLink.getShortLink().toString();
 
-        String invitationLink = shortLink.toString();
+                    String message = firebaseUser.getDisplayName() + " wants to invite you to Friends location!" +
+                            "Let's join Friends location! Here is my group invite code - " + group.getInviteCode() + " Use my referrer link: "
+                            + invitationLink;
+                    Intent share = new Intent(Intent.ACTION_SEND);
+                    share.setType("text/plain");
+                    share.putExtra(Intent.EXTRA_TEXT, message);
 
-        String message = firebaseUser.getDisplayName() + " wants to invite you to Friends location!" +
-                "Let's join Friends location! Here is my group invite code - " + group.getGroupInviteCode() + " Use my referrer link: "
-                + invitationLink;
-        Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("text/plain");
-        share.putExtra(Intent.EXTRA_TEXT, message);
-
-        startActivity(Intent.createChooser(share, "Share friend location app"));
+                    startActivity(Intent.createChooser(share, "Share friend location app"));
+                }).addOnFailureListener(e -> e.printStackTrace());
     }
 
     //Set group members
@@ -269,4 +266,5 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
             }
         }
     }
+
 }
