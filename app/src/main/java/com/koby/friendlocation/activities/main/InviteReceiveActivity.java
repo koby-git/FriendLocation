@@ -75,6 +75,7 @@ public class InviteReceiveActivity extends DaggerAppCompatActivity {
                                         Glide.with(InviteReceiveActivity.this)
                                                 .load(group.getImage())
                                                 .centerCrop()
+                                                .error(R.drawable.ic_group_grey)
                                                 .fallback(R.drawable.ic_group_grey)
                                                 .into(groupImageView);
 

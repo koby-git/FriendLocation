@@ -116,11 +116,15 @@ public class RegisterFragment extends DaggerFragment {
 
     //Set new user
     private void setUser() {
-
-        String guest = "אורח";
-
         //Set user in database
-        firebaseRepository.setUserProfileName(guest);
-        usernameViewModel.setName(guest);
+        firebaseRepository.setUserProfileName("אורח");
+
+        usernameViewModel.setName("אורח");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 }

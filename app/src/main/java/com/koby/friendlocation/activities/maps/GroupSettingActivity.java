@@ -170,35 +170,26 @@ public class GroupSettingActivity extends DaggerAppCompatActivity {
     private void setRecyclerView() {
         contacts = new ArrayList<>();
         contacts = (ArrayList<Contact>) getIntent().getSerializableExtra("groupContacts");
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
-        // specify an adapter (see also next example)
         mAdapter = new SettingContactsAdapter(contacts,GroupSettingActivity.this);
         recyclerView.setAdapter(mAdapter);
 
-        mAdapter.setOnItemClickListener(new SettingContactsAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(String imageUri) {
+        mAdapter.setOnItemClickListener(imageUri -> {
 
-                LayoutInflater inflater = LayoutInflater.from(GroupSettingActivity.this);
-                View view =inflater.inflate(R.layout.dialog_image, null);
-                ImageView imageView = view.findViewById(R.id.dialog_image);
-                Glide.with(GroupSettingActivity.this)
-                        .load(imageUri)
-                        .placeholder(R.drawable.ic_delete_forever)
-                        .centerCrop()
-                        .into(imageView);
+            LayoutInflater inflater = LayoutInflater.from(GroupSettingActivity.this);
+            View view =inflater.inflate(R.layout.dialog_image, null);
+            ImageView imageView = view.findViewById(R.id.dialog_image);
+            Glide.with(GroupSettingActivity.this)
+                    .load(imageUri)
+                    .placeholder(R.drawable.ic_delete_forever)
+                    .centerCrop()
+                    .into(imageView);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingActivity.this);
-                builder.setView(view);
-                        builder.show();
-            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(GroupSettingActivity.this);
+            builder.setView(view);
+                    builder.show();
         });
     }
 
@@ -206,28 +197,24 @@ public class GroupSettingActivity extends DaggerAppCompatActivity {
     protected void onStart() {
         super.onStart();
         final DocumentReference docRef = firebaseRepository.getGroupDocumentReference(groupUid);
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.w(TAG, "Listen failed.", e);
-                    return;
-                }
+        docRef.addSnapshotListener((snapshot, e) -> {
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e);
+                return;
+            }
 
-                if (snapshot != null && snapshot.exists()) {
-                    Log.d(TAG, "Current data: " + snapshot.getData());
+            if (snapshot != null && snapshot.exists()) {
+                Log.d(TAG, "Current data: " + snapshot.getData());
 
-                    group = snapshot.toObject(Group.class);
-                        Glide.with(GroupSettingActivity.this)
-                                .load(group.getImage())
-                                .fallback(R.drawable.ic_group_grey)
-                                .centerCrop()
-                                .into(imageView);
+                group = snapshot.toObject(Group.class);
+                    Glide.with(GroupSettingActivity.this)
+                            .load(group.getImage())
+                            .fallback(R.drawable.ic_group_grey)
+                            .centerCrop()
+                            .into(imageView);
 
-                } else {
-                    Log.d(TAG, "Current data: null");
-                }
+            } else {
+                Log.d(TAG, "Current data: null");
             }
         });
     }
