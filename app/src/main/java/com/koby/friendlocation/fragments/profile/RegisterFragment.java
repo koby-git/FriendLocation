@@ -90,26 +90,20 @@ public class RegisterFragment extends DaggerFragment {
         password = passwordTextView.getText().toString().trim();
 
         if(validateInput()) {
-            mAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                @Override
-                public void onSuccess(AuthResult authResult) {
-                    setUser();
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "createUserWithEmail:success");
-                    RegisterProfileFragment profileFragment = new RegisterProfileFragment();
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.fragment, profileFragment);
-                    transaction.commit();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    // If sign in fails, display a message to the user.
-                    progressBar.setVisibility(View.GONE);
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(), "createUser failed.",
-                            Toast.LENGTH_SHORT).show();
-                }
+            mAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
+                setUser();
+                // Sign in success, update UI with the signed-in user's information
+                Log.d(TAG, "createUserWithEmail:success");
+                RegisterProfileFragment profileFragment = new RegisterProfileFragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment, profileFragment);
+                transaction.commit();
+            }).addOnFailureListener(e -> {
+                // If sign in fails, display a message to the user.
+                progressBar.setVisibility(View.GONE);
+                e.printStackTrace();
+                Toast.makeText(getActivity(), "createUser failed.",
+                        Toast.LENGTH_SHORT).show();
             });
         }
     }

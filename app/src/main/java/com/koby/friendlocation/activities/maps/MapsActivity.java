@@ -60,7 +60,6 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
 
     //Dagger injection
     @Inject LocationProvider locationProvider;
-    @Inject @Nullable FirebaseUser firebaseUser;
     @Inject FirebaseRepository firebaseRepository;
 
     //Ui element
@@ -136,22 +135,19 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
         mMap = googleMap;
 
         locationProvider.getFusedLocationProviderClient()
-                .getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if(location!=null){
-                    LatLng myLocation = new LatLng((location.getLatitude()), location.getLongitude());
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
-                    CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(myLocation)      // Sets the center of the map to Mountain View
-                            .zoom(17)                   // Sets the zoom
-                            .bearing(90)                // Sets the orientation of the camera to east
-                            .tilt(30)                   // Sets the tilt of the camera to 30 degrees
-                            .build();                   // Creates a CameraPosition from the builder
-                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                }
-            }
-        });
+                .getLastLocation().addOnSuccessListener(location -> {
+                    if(location!=null){
+                        LatLng myLocation = new LatLng((location.getLatitude()), location.getLongitude());
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(myLocation)      // Sets the center of the map to Mountain View
+                                .zoom(17)                   // Sets the zoom
+                                .bearing(90)                // Sets the orientation of the camera to east
+                                .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+                                .build();                   // Creates a CameraPosition from the builder
+                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    }
+                });
     }
 
     //Stop listening to group firestoreUi
@@ -189,7 +185,7 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
 
                     String invitationLink = shortDynamicLink.getShortLink().toString();
 
-                    String message = firebaseUser.getDisplayName() + " wants to invite you to Friends location!" +
+                    String message = firebaseRepository.getCurrentUser().getDisplayName() + " wants to invite you to Friends location!" +
                             "Let's join Friends location! Here is my group invite code - " + group.getInviteCode() + " Use my referrer link: "
                             + invitationLink;
                     Intent share = new Intent(Intent.ACTION_SEND);
@@ -231,7 +227,7 @@ public class MapsActivity extends DaggerAppCompatActivity implements OnMapReadyC
                 Glide.with(MapsActivity.this)
                         .load(imageUri)
                         .placeholder(R.drawable.ic_delete_forever)
-                        .fallback(R.drawable.ic_group_grey)
+                        .fallback(R.drawable.ic_person)
                         .centerCrop()
                         .into(imageView);
 

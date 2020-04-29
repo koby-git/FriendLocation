@@ -56,8 +56,6 @@ public class GroupSettingActivity extends DaggerAppCompatActivity {
     private static final String TAG = GroupSettingActivity.class.getSimpleName();
 
     @Inject FirebaseRepository firebaseRepository;
-    @Inject @Nullable
-    FirebaseUser firebaseUser;
 
     //Ui element
     @BindView(R.id.setting_group_toolbar)Toolbar toolbar;
@@ -128,7 +126,7 @@ public class GroupSettingActivity extends DaggerAppCompatActivity {
 
                     String invitationLink = shortDynamicLink.getShortLink().toString();
 
-                    String message = firebaseUser.getDisplayName() + " wants to invite you to Friends location!" +
+                    String message = firebaseRepository.getCurrentUser().getDisplayName() + " wants to invite you to Friends location!" +
                             "Let's join Friends location! Here is my group invite code - " + group.getInviteCode() + " Use my referrer link: "
                             + invitationLink;
                     Intent share = new Intent(Intent.ACTION_SEND);
@@ -141,14 +139,11 @@ public class GroupSettingActivity extends DaggerAppCompatActivity {
 
     @OnClick(R.id.setting_group_exit)
     public void exitGroup(){
-        firebaseRepository.deleteGroup(group)
-                .addOnTaskCompleteListener(new FirebaseRepository.OnBatchCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        startActivity(new Intent(GroupSettingActivity.this, MainActivity.class));
-                        finish();
-                    }
-                });
+        firebaseRepository.deleteGroup(group);
+        Intent intent = new Intent(GroupSettingActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        finish();
 
     }
 
@@ -207,7 +202,7 @@ public class GroupSettingActivity extends DaggerAppCompatActivity {
                 Log.d(TAG, "Current data: " + snapshot.getData());
 
                 group = snapshot.toObject(Group.class);
-                    Glide.with(GroupSettingActivity.this)
+                    Glide.with(getApplicationContext())
                             .load(group.getImage())
                             .fallback(R.drawable.ic_group_grey)
                             .centerCrop()

@@ -54,7 +54,6 @@ public class FirestoreUiGroupAdapter extends FirestoreRecyclerAdapter<Group, Fir
 
     @Override
     protected void onBindViewHolder(@NonNull GroupHolder holder, int position, @NonNull Group model) {
-        System.out.println("aaaaaaaaaaaaaaaaaaaa");
         holder.groupName.setText(model.getName());
         if(model.getImage()!=null){
             Glide.with(context)

@@ -40,10 +40,6 @@ import static com.koby.friendlocation.providers.CameraProvider.REQUSET_PHOTO_FRO
 public abstract class BaseProfileFragment extends DaggerFragment{
 
     @Inject
-    @Nullable
-    public FirebaseUser firebaseUser;
-
-    @Inject
     public FirebaseRepository firebaseRepository;
 
     @BindView(R.id.profile_name) public TextView username;

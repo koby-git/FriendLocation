@@ -13,6 +13,7 @@ import androidx.preference.SwitchPreference;
 import com.google.firebase.auth.FirebaseAuth;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.activities.auth.LoginActivity;
+import com.koby.friendlocation.activities.main.SettingsActivity;
 import com.koby.friendlocation.providers.LocationProvider;
 import com.koby.friendlocation.utils.Utils;
 
@@ -36,18 +37,16 @@ public class SettingsFragment extends PreferenceFragmentCompat implements HasAnd
         SwitchPreference privacySwitchPreference = findPreference("location");
         Preference logoutPreference = findPreference("logout");
 
-        logoutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                //Sign out
-                mAuth.signOut();
-                //Remove location tracker
-                locationProvider.removeLocationUpdates();
-                //Move to login activity
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-                getActivity().finish();
-                return false;
-            }
+        logoutPreference.setOnPreferenceClickListener(preference -> {
+            //Sign out
+            mAuth.signOut();
+            //Remove location tracker
+            locationProvider.removeLocationUpdates();
+            //Move to login activity
+            Intent intent = new Intent(getActivity(),LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            return false;
         });
 
         privacySwitchPreference.setOnPreferenceChangeListener((preference, newValue) -> {

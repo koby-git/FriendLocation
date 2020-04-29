@@ -21,7 +21,6 @@ import com.bumptech.glide.Glide;
 import com.koby.friendlocation.activities.maps.MapsActivity;
 import com.koby.friendlocation.view.adapter.FirestoreUiGroupAdapter;
 import com.koby.friendlocation.R;
-import com.koby.friendlocation.model.Group;
 
 import com.koby.friendlocation.providers.LocationProvider;
 import com.koby.friendlocation.repository.FirebaseRepository;
@@ -53,6 +52,7 @@ public class MainActivity extends DaggerAppCompatActivity {
 
         ButterKnife.bind(this);
 
+        System.out.println(firebaseRepository.getCurrentUser()+"aaaaaaaaa");
         //Check if permission granted
         // if permission not granted - request permission
         if (!Utils.checkPermissions(MainActivity.this)) {
@@ -62,7 +62,11 @@ public class MainActivity extends DaggerAppCompatActivity {
         setGroupRecyclerView();
 
         //First time request
+        Log.i(TAG, String.valueOf(Utils.getRequestingLocationUpdates(MainActivity.this)));
+        System.out.println(Utils.getRequestingLocationUpdates(MainActivity.this));
         if (Utils.getRequestingLocationUpdates(MainActivity.this)) {
+            Log.i(TAG,"request first time");
+            System.out.println(Utils.getRequestingLocationUpdates(MainActivity.this));
             locationProvider.requestLocationUpdates();
         }
     }

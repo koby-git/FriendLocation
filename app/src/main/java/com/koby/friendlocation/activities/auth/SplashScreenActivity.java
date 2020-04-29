@@ -6,6 +6,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.koby.friendlocation.activities.main.MainActivity;
 
@@ -16,8 +17,7 @@ import dagger.android.support.DaggerAppCompatActivity;
 public class SplashScreenActivity extends DaggerAppCompatActivity {
 
     @Inject
-    @Nullable
-    FirebaseUser firebaseUser;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class SplashScreenActivity extends DaggerAppCompatActivity {
         hideSystemUI();
 
         //Check if user is logged in
-        if (firebaseUser == null) {
+        if (mAuth.getCurrentUser() == null) {
             Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();

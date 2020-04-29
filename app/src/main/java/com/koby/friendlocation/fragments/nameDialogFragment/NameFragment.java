@@ -36,10 +36,6 @@ public abstract class NameFragment extends BottomSheetDialogFragment implements 
     @Inject
     DispatchingAndroidInjector<Object> androidInjector;
 
-    @Inject
-    @Nullable
-    FirebaseUser firebaseUser;
-
     @Inject FirebaseRepository firebaseRepository;
 
     @BindView(R.id.fragment_name_edit_text)

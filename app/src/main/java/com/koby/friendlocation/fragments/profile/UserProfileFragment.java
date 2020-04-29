@@ -16,7 +16,7 @@ public class UserProfileFragment extends BaseProfileFragment {
 
     //Set current name
     public void setViewModelName(TextView username) {
-        username.setText(firebaseUser.getDisplayName());
+        username.setText(firebaseRepository.getCurrentUser().getDisplayName());
     }
 
     //Load current user profile image

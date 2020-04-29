@@ -8,6 +8,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.activities.main.MainActivity;
 import com.koby.friendlocation.fragments.nameDialogFragment.UserNameFragment;
@@ -23,6 +24,10 @@ public class RegisterProfileFragment extends BaseProfileFragment {
     @Override
     public void uploadImage(Uri uri) {
         firebaseRepository.uploadUserImage(uri);
+        Glide.with(getContext())
+                .load(uri.toString())
+                .into(imageView);
+
     }
 
 
@@ -37,8 +42,10 @@ public class RegisterProfileFragment extends BaseProfileFragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_done){
-            startActivity(new Intent(getContext(), MainActivity.class));
-            getActivity().finish();
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+//            getActivity().finish();
         }
         return true;
     }

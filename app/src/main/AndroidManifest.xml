@@ -26,7 +26,6 @@
             android:theme="@style/AppThemeSplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -37,25 +36,18 @@
 
         <activity android:name=".activities.main.MainActivity" />
         <activity android:name=".activities.main.CreateGroupActivity" />
-        <activity
-            android:name=".activities.main.SettingsActivity"
-            android:launchMode="singleTop" />
+        <activity android:name=".activities.main.SettingsActivity"/>
 
-        <activity
-            android:name=".activities.maps.MapsActivity"
+        <activity android:name=".activities.maps.MapsActivity"
             android:label="@string/title_activity_maps"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
-            android:name=".activities.maps.GroupSettingActivity"
+        <activity android:name=".activities.maps.GroupSettingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.main.InviteReceiveActivity"
-            android:launchMode="singleTask">
+        <activity android:name=".activities.main.InviteReceiveActivity">
             <intent-filter
                 android:autoVerify="true"
                 tools:targetApi="23">
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -65,7 +57,6 @@
 
             </intent-filter>
         </activity>
-
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

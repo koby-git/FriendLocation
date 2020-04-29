@@ -25,42 +25,32 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
-import androidx.core.content.ContextCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.koby.friendlocation.R;
 import com.koby.friendlocation.activities.main.MainActivity;
+import com.koby.friendlocation.model.UserLocation;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import static com.koby.friendlocation.constant.FirebaseConstants.USERS;
-import static com.koby.friendlocation.providers.CameraProvider.REQUEST_OK;
 
-/**
- * Utility methods used in this sample.
- */
 public  class Utils {
 
     final static String KEY_LOCATION_UPDATES_REQUESTED = "location-updates-requested";
@@ -68,18 +58,7 @@ public  class Utils {
     final static String CHANNEL_ID = "channel_01";
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 45;
 
-    public static void setRequestingLocationUpdates(Context context, boolean value) {
-        PreferenceManager.getDefaultSharedPreferences(context)
-                .edit()
-                .putBoolean(KEY_LOCATION_UPDATES_REQUESTED, value)
-                .apply();
-    }
-
-    public static boolean getRequestingLocationUpdates(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(KEY_LOCATION_UPDATES_REQUESTED, true);
-    }
-
+    //Get
     /**
      * Posts a notification in the notification bar when a transition is detected.
      * If the user clicks the notification, control goes to the MainActivity.
@@ -108,8 +87,6 @@ public  class Utils {
 
         // Define the notification settings.
         builder.setSmallIcon(R.mipmap.ic_launcher)
-                // In a real app, you may want to use a library like Volley
-                // to decode the Bitmap.
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
                         R.mipmap.ic_launcher))
                 .setColor(Color.RED)
@@ -119,7 +96,7 @@ public  class Utils {
 
         // Dismiss notification once the user touches it.
         builder.setAutoCancel(true);
-        builder.setTimeoutAfter(3000);
+        builder.setTimeoutAfter(2000);
 
         // Get an instance of the Notification manager
         NotificationManager mNotificationManager =
@@ -130,7 +107,7 @@ public  class Utils {
             CharSequence name = context.getString(R.string.app_name);
             // Create the channel for the notification
             NotificationChannel mChannel =
-                    new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
+                    new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_LOW);
 
             // Set the Notification Channel for the Notification Manager.
             mNotificationManager.createNotificationChannel(mChannel);
@@ -141,44 +118,40 @@ public  class Utils {
 
         // Issue the notification
         mNotificationManager.notify(0, builder.build());
+
     }
-
-    /**
-     * Returns the title for reporting about a list of {@link Location} objects.
-     *
-     * @param context The {@link Context}.
-     */
-    static String getLocationResultTitle(Context context, List<Location> locations) {
-
-        Location mLocation = getLastLocation(locations);
-        String locationResualtTitle = "You are at " + getCompleteAddressString(context,mLocation.getLatitude(), mLocation.getLongitude());
-        return locationResualtTitle;
+    public static void setRequestingLocationUpdates(Context context, boolean value) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(FirebaseAuth.getInstance().getCurrentUser()+KEY_LOCATION_UPDATES_REQUESTED, value)
+                .apply();
     }
-
     public static void setLocationUpdatesResult(Context context, List<Location> locations) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        int lastLocation = locations.size()-1;
-        double latitude = locations.get(lastLocation).getLatitude();
-        double longitude = locations.get(lastLocation).getLongitude();
-        Map mapLocation = new HashMap();
+        double latitude = locations.get(locations.size()-1).getLatitude();
+        double longitude = locations.get(locations.size()-1).getLongitude();
 
-        mapLocation.put("address",getCompleteAddressString(context,latitude,longitude));
-        mapLocation.put("date",DateFormat.getDateTimeInstance().format(new Date()));
-        mapLocation.put("latitude", latitude);
-        mapLocation.put("longitude" , longitude);
+        UserLocation userLocation = new UserLocation(
+                getCompleteAddressString(context,latitude,longitude),
+                DateFormat.getDateTimeInstance().format(new Date()),
+                latitude,longitude);
 
         db.collection(USERS).document(mAuth.getUid())
-                .set(mapLocation, SetOptions.merge());
+                .set(userLocation, SetOptions.merge());
     }
 
+    //Set
+    public static boolean getRequestingLocationUpdates(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(FirebaseAuth.getInstance().getCurrentUser()+KEY_LOCATION_UPDATES_REQUESTED, true);
+    }
     public static String getLocationUpdatesResult(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(KEY_LOCATION_UPDATES_RESULT, "");
     }
-
     public static String getCompleteAddressString(Context context, double LATITUDE, double LONGITUDE) {
         String strAdd = "";
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
@@ -199,38 +172,26 @@ public  class Utils {
         return strAdd;
     }
 
-    private static Location getLastLocation(List<Location> locations){
-        int lastLocation = locations.size()-1;
-        return locations.get(lastLocation);
-    }
-
+    //Permissions
     public static Boolean checkPermissions(Context context){
             int fineLocationPermissionState = ActivityCompat.checkSelfPermission(
                     context, Manifest.permission.ACCESS_FINE_LOCATION);
 
-        System.out.println("fine location: " + fineLocationPermissionState);
-
             int backgroundLocationPermissionState = ActivityCompat.checkSelfPermission(
                     context, Manifest.permission.ACCESS_BACKGROUND_LOCATION);
 
-        System.out.println("background location: " + backgroundLocationPermissionState);
-
-        System.out.println(PackageManager.PERMISSION_GRANTED );
             return (fineLocationPermissionState == PackageManager.PERMISSION_GRANTED) &&
                     (backgroundLocationPermissionState == PackageManager.PERMISSION_GRANTED);
     }
-
     public static boolean checkPermission(Context context){
 
         return ActivityCompat.checkSelfPermission(
                 context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
-
     public static void requestPermission(Activity activity){
         ActivityCompat.requestPermissions(activity,new String[] {
                 Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_PERMISSIONS_REQUEST_CODE);
     }
-
     public static void requestPermissions(Activity activity){
         ActivityCompat.requestPermissions(activity,
                 new String[] {

@@ -36,7 +36,6 @@ public class InviteReceiveActivity extends DaggerAppCompatActivity {
     @BindView(R.id.invite_receive_group_name) TextView groupName;
 
     @Inject FirebaseRepository firebaseRepository;
-    @Inject @Nullable FirebaseUser firebaseUser;
     @Inject Group group;
 
     @Override
@@ -46,7 +45,7 @@ public class InviteReceiveActivity extends DaggerAppCompatActivity {
 
         ButterKnife.bind(this);
 
-        if (firebaseUser != null) {
+        if (firebaseRepository.getCurrentUser() != null) {
             FirebaseDynamicLinks.getInstance()
                     .getDynamicLink(getIntent())
                     .addOnSuccessListener(this, pendingDynamicLinkData -> {
@@ -95,7 +94,9 @@ public class InviteReceiveActivity extends DaggerAppCompatActivity {
                 .addOnTaskCompleteListener(
                         (FirebaseRepository.OnBatchCompleteListener) task -> {
                             if (task.isSuccessful()) {
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                startActivity(intent);
                                 finish();
                             } else {
                                 Log.i(TAG, task.getException().toString());

@@ -23,11 +23,6 @@ public class AppModule {
         return FirebaseAuth.getInstance();
     }
 
-    @Singleton
-    @Provides
-    @Nullable
-    static FirebaseUser provideFirebaseUser(FirebaseAuth firebaseAuth){ return firebaseAuth.getCurrentUser(); }
-
     @Provides
     static FirebaseFirestore provideFirebaseFirestore(){
         return FirebaseFirestore.getInstance();

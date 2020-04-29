@@ -57,12 +57,20 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
     @Override
     public void onBindViewHolder(@NonNull final ContactHolder contactHolder, int i) {
 
-        if (contactsList.get(i).getImageUri()!=null){
-            Glide.with(context).load(Uri.parse(contactsList.get(i).getImageUri())).circleCrop().into(contactHolder.contactImage);
+        if (contactsList.get(i).getImageUri() != null) {
+            Glide.with(context)
+                    .load(Uri.parse(contactsList.get(i).getImageUri()))
+                    .circleCrop()
+                    .into(contactHolder.contactImage);
         }
+        if (contactsList.get(i).getAddress()==null) {
+            contactHolder.contactName.setText(contactsList.get(i).getName());
+            contactHolder.contactStreet.setText("מעדכן...");
+        } else {
             contactHolder.contactName.setText(contactsList.get(i).getName());
             contactHolder.contactStreet.setText(contactsList.get(i).getAddress());
             contactHolder.contactDate.setText(contactsList.get(i).getDate());
+        }
     }
 
     @Override
